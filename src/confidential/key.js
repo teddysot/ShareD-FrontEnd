@@ -1,0 +1,1 @@
+export const publicKey = "pkey_test_5ltqdakni12ddhtwpj8"
