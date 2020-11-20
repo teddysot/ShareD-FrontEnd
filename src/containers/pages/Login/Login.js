@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Col, Form, Input, notification, Row } from "antd";
 import axios from 'axios'
 import LocalStorageService from '../../../services/LocalStorageService'
+import { setupSocket, setRole } from '../../../store/actions';
+import { connect } from 'react-redux'
 
 function Login(props) {
   const onFinish = ({ username, password }) => {
@@ -11,8 +13,8 @@ function Login(props) {
           description: "Login Success"
         })
         LocalStorageService.setToken(res.data.token)
-        props.setRole("USER")
-        props.setupSocket()
+        props.onSetRole("USER")
+        props.onSetupSocket()
       })
       .catch(err => {
         notification.error({
@@ -53,4 +55,11 @@ function Login(props) {
   );
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetupSocket: () => dispatch(setupSocket()),
+    onSetRole: (value) => dispatch(setRole(value))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Login);
