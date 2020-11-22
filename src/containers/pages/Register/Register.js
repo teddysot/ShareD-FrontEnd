@@ -21,7 +21,7 @@ function Register(props) {
 
     const name = [...fname.charAt(0).toUpperCase() + fname.slice(1), ' ', ...lname.charAt(0).toUpperCase() + lname.slice(1)].join('')
     axios.post("/user/register", {
-      username, password, name, phone_number, email, role, profile_url: fileName
+      username, password, name, phone_number, email, role, profile_url: fileName, isConfirmed: false
     })
       .then(res => {
         notification.success({
