@@ -1,5 +1,6 @@
 import Login from "../containers/pages/Login/Login";
 import Register from "../containers/pages/Register/Register";
+import OrderList from "../containers/pages/OrderList/OrderList";
 
 const components = {
   login: {
@@ -10,6 +11,10 @@ const components = {
     path: "/register",
     page: Register
   },
+  orderList: {
+    path: "/orderlist",
+    page: OrderList
+  },
 };
 
 const roles = {
@@ -18,6 +23,7 @@ const roles = {
     components.register
   ],
   USER: [
+    components.orderList
 
   ]
 }
