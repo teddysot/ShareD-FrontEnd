@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Welcome() {
   return (
@@ -14,11 +15,26 @@ function Welcome() {
         color: "#FFFFFF",
       }}
     >
-      <div style={{height: "100vh",display: "flex" ,flexDirection: "column" ,justifyContent: "center", alignItems: "center" }}>
-        <div data-aos="zoom-out-down" style={{ fontSize: "50px" }}>
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          data-aos="zoom-out-down"
+          style={{ fontSize: "60px", paddingBottom: "10px" }}
+        >
           Welcome
         </div>
-        <div data-aos="fade-down" style ={{border:'1px solid',width :'150px'}}><Button>Enter to this site</Button></div>
+        <div data-aos="fade-down">
+          <Link to="/login">
+            <Button>Enter to this site</Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
