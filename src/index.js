@@ -9,6 +9,10 @@ import { BrowserRouter } from 'react-router-dom';
 import socketReducer from './store/reducers/socket'
 import roleReducer from './store/reducers/role'
 import thunk from 'redux-thunk'
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
+// ..
+AOS.init();
 
 const rootReducer = combineReducers({
   socket: socketReducer,
