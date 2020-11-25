@@ -1,26 +1,35 @@
-import React from 'react'
-import { Button, Col, Input, Row, Avatar } from "antd";
-import { UserOutlined } from '@ant-design/icons';
-import { connect, useStore } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { Button, Col, Input, Row, Avatar } from 'antd';
+import { connect } from 'react-redux'
 
 
 
 function CreateListTable({ tableList }) {
     // เรียกใช้ state tableList จาก redux โดยใช้ mapStateToProps 
     // connect  CreateListTable กับ redux 
-    const tableCode = tableList[tableList.length - 1].code
+
+    const [tableCode, setTableCode] = useState('')
+
+    useEffect(() => {
+        if (tableList.length > 0) {
+            console.log(tableList);
+            setTableCode(tableList[tableList.length - 1].code)
+        }
+        return () => {
+
+        }
+    }, [tableList])
     //const users = tableList[tableList.length - 1].users
     const users = [
         {
             username: 'pup',
-            profile_url: ''
+            profile_url: 'https://campus.campus-star.com/app/uploads/2019/09/Nadech-Kugimiya-5-1024x1024.jpg'
         },
         {
             username: 'cake',
-            profile_url: ''
+            profile_url: 'https://f.ptcdn.info/855/065/000/pxg5sj1lg58inlAHK8bz-o.jpg'
         },
     ]
-    console.log(tableList)
     return (
         <>
 
@@ -57,39 +66,26 @@ function CreateListTable({ tableList }) {
 
                 </Col>
             </Row>
-            <Row justify="center">
-                <Col>
-                    <Input placeholder="Enter Table" />
-                </Col>
-            </Row>
+           
 
-            
+
 
             <Row justify="center" style={{ marginTop: 30 }}>
                 <Col>
-                    {/* <Row>
-                        <Col>
-                            <Avatar size={100} style={{ backgroundColor: "#86DBD4" }} icon={<UserOutlined />} />
-                        </Col>
-                    </Row>
-                    <Row justify="center" style={{ marginTop: 5 }}>
-                        <Col>
-                            <h2 style={{ color: "#746953" }}>A</h2>
-                        </Col>
-                    </Row> */}
+                   
                     <div style={{ display: 'flex' }}>
-                {users.map((user) => (
-                    <div>
-                    <div>
-                        <UserOutlined />
+                        {users.map((user, idx) => (
+                            <div key={idx} style={{marginRight:20}}>
+                                <div>
+                                <Avatar size={100} src={user.profile_url} style={{ backgroundColor: "#86DBD4" }}  />
+                                </div>
+                                <div>
+                                    {user.username}
+                                </div>
+                            </div>
+                        ))}
+
                     </div>
-                    <div>
-                        {user.username}
-                    </div>
-                        </div>
-                    
-                ))}
-            </div>
 
                 </Col>
             </Row>
