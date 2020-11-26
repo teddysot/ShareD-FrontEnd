@@ -3,10 +3,76 @@ import { Row, Col, Button, List, Avatar } from "antd";
 import OrderListItem from "../OrderListItem/OrderListItem";
 import axios from "axios";
 
-
+const orderData = [
+  {
+    name: "salmon",
+    quantity: 1,
+    price: 100,
+  },
+  {
+    name: "water",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "Rice",
+    quantity: 5,
+    price: 500,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+  {
+    name: "sushi ",
+    quantity: 2,
+    price: 300,
+  },
+];
 
 function OrderList() {
-  //function Component ต้องตัวใหญ่นำหน้า
+  //function component ต้องตัวใหญ่นำหน้า
 
   const [data, setData] = useState([]); // ประเภทของค่าเริ่มต้น ต้องตรงกัน
 

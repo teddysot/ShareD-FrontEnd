@@ -1,6 +1,7 @@
 import Login from "../containers/pages/Login/Login";
 import Register from "../containers/pages/Register/Register";
 import ChooseMenus from "../containers/pages/ChooseMenus/ChooseMenus";
+import OrderList from "../containers/pages/OrderList/OrderList";
 
 const components = {
   login: {
@@ -15,6 +16,10 @@ const components = {
     path: "/choose-menus",
     page: ChooseMenus
   },
+  orderList: {
+    path: "/orderlist",
+    page: OrderList
+  },
 };
 
 const roles = {
@@ -24,6 +29,8 @@ const roles = {
   ],
   USER: [
     components.chooseMenus
+    components.orderList
+
   ]
 }
 
