@@ -27,7 +27,10 @@ function Register(props) {
         notification.success({
           description: "Signup successfully"
         });
-        props.history.push("/");
+        props.history.push({
+          pathname: "/otp",
+          state: { email }
+        });
       })
       .catch(err => {
         console.log(err);
