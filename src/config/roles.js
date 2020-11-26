@@ -24,7 +24,6 @@ const roles = {
   ],
   USER: [
     components.chooseMenus
-    
   ]
 }
 

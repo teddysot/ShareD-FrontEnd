@@ -1,37 +1,96 @@
-import React from 'react'
-import { List, Avatar } from 'antd';
+import React from "react";
+import { Row, Col, List, Avatar, Button, Divider } from "antd";
+import OrderListItem from "../OrderListItem/OrderListItem";
 
-const data = [
+const orderData = [
     {
-      title: 'Ant Design Title 1',
+      name: "salmon",
+      quantity: 1,
+      price: 100,
     },
     {
-      title: 'Ant Design Title 2',
+      name: "water",
+      quantity: 2,
+      price: 300,
     },
     {
-      title: 'Ant Design Title 3',
+      name: "Rice",
+      quantity: 5,
+      price: 500,
     },
     {
-      title: 'Ant Design Title 4',
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
+    },
+    {
+      name: "sushi ",
+      quantity: 2,
+      price: 300,
     },
   ];
 
-function ChooseMenus() {
-    return (
-        <List
-        itemLayout="horizontal"
-        dataSource={data}
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-              title={<a href="https://ant.design">{item.title}</a>}
-              description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-            />
-          </List.Item>
-        )}
-      />
-    )
+function ChooseMenus(props) {
+  return (
+    <div style={{height: '100vh', width: '100vw'}}>
+      <Row
+        style={{
+          justifyContent: "center",
+          alignContent: "center",
+          width: "100vw",
+          height: "10vh",
+        }}
+      >
+        <Col style={{ color: "#746953",fontSize: "25px" }}>ORDER</Col>
+      </Row>
+      <Row style={{ justifyContent: "center", width: "100vw", height: "60vh" }}>
+        {/* เรียก component จาก orderlistitem มาแสดงและส่ง props */}
+        <OrderListItem title="Your Amount" data={orderData} totalPrice={totalPrice} isYour={true} /> {/*จะส่งข้อมูลเข้าไปอีก component ต้องส่งผ่าน props*/}
+        
+      </Row>   
+          
+    </div>
+  )
 }
 
-export default ChooseMenus
+export default ChooseMenus;
