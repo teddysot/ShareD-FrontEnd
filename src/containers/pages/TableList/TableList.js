@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Col, Input, Row, Modal } from "antd";
+import { Button, Col, Input, Row, Modal,notification} from "antd";
 import { connect } from 'react-redux'
 import { addTable } from '../../../store/actions';
 import { Link } from 'react-router-dom';
@@ -21,20 +21,28 @@ function TableList({ socket, tableList, onAddTable }) {
         console.log('click')
         // ฟั่งชั่นที่รอการเรียกจากอีกฝั่ง
         socket.on("createTable", (res) => {
-            const { tableCode } = res
-
-            const newTable = {
-                code: tableCode,
-                users: []
+            const { tableCode ,status} = res
+            if(status === 400){
+                notification.error({
+                    description: "Failed to Create Table"
+                })
+                return
             }
-
-            // สร้าง table list ใหม่ขึ้นมา
-            const newTableList = [...tableList]
-
-            // เพิ่ม โต๊ะใหม่เข้าไปใน table list
-            newTableList.push(newTable)
-            // ส่งรายชื่อโต๊ะใหม่ไปให้ Redux
-            onAddTable(newTableList)
+            else{
+                const newTable = {
+                    code: tableCode,
+                    users: []
+                }
+    
+                // สร้าง table list ใหม่ขึ้นมา
+                const newTableList = [...tableList]
+    
+                // เพิ่ม โต๊ะใหม่เข้าไปใน table list
+                newTableList.push(newTable)
+                // ส่งรายชื่อโต๊ะใหม่ไปให้ Redux
+                onAddTable(newTableList)
+            }
+            
         })
         // เรียกฟังชั่น createTable ฝั่ง BackEnd
         socket.emit('createTable', {tableNumber})
