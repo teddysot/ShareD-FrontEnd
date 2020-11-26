@@ -1,60 +1,66 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Col, Input, Row, Avatar } from 'antd';
 import { connect } from 'react-redux'
-
-
+import { useHistory } from 'react-router-dom';
 
 function CreateListTable({ tableList }) {
     // เรียกใช้ state tableList จาก redux โดยใช้ mapStateToProps 
     // connect  CreateListTable กับ redux 
 
     const [tableCode, setTableCode] = useState('')
+    const [users, setUsers] = useState([])
+
+    const history = useHistory()
+
+    const onCancelClick = () => {
+        history.push('/table-list')
+    }
 
     useEffect(() => {
         if (tableList.length > 0) {
-            console.log(tableList);
             setTableCode(tableList[tableList.length - 1].code)
+
+            const targetUsers = tableList.filter((table) => table.code === tableCode)
+            setUsers(users => targetUsers)
         }
         return () => {
 
         }
     }, [tableList])
-    //const users = tableList[tableList.length - 1].users
-    const users = [
-        {
-            username: 'pup',
-            profile_url: 'https://campus.campus-star.com/app/uploads/2019/09/Nadech-Kugimiya-5-1024x1024.jpg'
-        },
-        {
-            username: 'cake',
-            profile_url: 'https://f.ptcdn.info/855/065/000/pxg5sj1lg58inlAHK8bz-o.jpg'
-        },
-    ]
+
     return (
         <>
 
-            <Row>
-                <Col span={4} offset={4}>
-
+            <Row justify="center">
+                
+                <Col span={24}>
+                    <img style={{ maxHeight: "132px", margin: "50px"}} src="https://i.imgur.com/4TeZqYS.png" alt="logo" />
                 </Col>
-                <Col span={2} offset={2}>
-                    <img style={{ maxHeight: "132px", margin: "50px" }} src="https://i.imgur.com/4TeZqYS.png" alt="logo" />
-                </Col>
-                <Col span={5} offset={5} style={{
+                </Row>
+                <Row>
+                <Col style={{
+                    // alignItems: "flex-start",
                     backgroundColor: "#EFEFEF",
                     float: "right",
-                    height: "30%",
-                    width: "30%",
+                    height: "15%",
+                    width: "20%",
                     padding: 10,
                     color: "red",
                     borderRadius: 10,
                     marginTop: 40,
-                    fontSize: 16
+                    fontSize: 16,
+                    position:'absolute',
+                    right:'3%',
+                    top:'0%',
+                    zIndex:'1'
+                    
+                    
+
 
                 }}>
                     <Row justify="center">
-                        <Col>
-                            Group Code
+                        <Col >
+                            <h3 style={{color:'salmon'}}>Group Code</h3>
                         </Col>
                     </Row>
                     <Row justify="center">
@@ -66,32 +72,32 @@ function CreateListTable({ tableList }) {
 
                 </Col>
             </Row>
-           
+
 
 
 
             <Row justify="center" style={{ marginTop: 30 }}>
                 <Col>
-                   
+
                     <div style={{ display: 'flex' }}>
-                        {users.map((user, idx) => (
-                            <div key={idx} style={{marginRight:20}}>
+                        {users.length > 0 ? (users.map((user, idx) => (
+                            <div key={idx} style={{ marginRight: 20 }}>
                                 <div>
-                                <Avatar size={100} src={user.profile_url} style={{ backgroundColor: "#86DBD4" }}  />
+                                    <Avatar size={100} src={user.profile_url} style={{ backgroundColor: "#86DBD4" }} />
                                 </div>
                                 <div>
                                     {user.username}
                                 </div>
                             </div>
-                        ))}
+                        ))) : null}
 
                     </div>
 
                 </Col>
             </Row>
             <Row justify="center" style={{ marginTop: 50 }}>
-                <Col style={{ marginRight: 50 }}>
-                    <Button type="primary" shape="round"
+                <Col>
+                    <Button type="primary" shape="round" onClick={onCancelClick}
                         style={{
                             backgroundColor: "#86DBD4",
                             borderColor: "#86DBD4",
@@ -100,20 +106,9 @@ function CreateListTable({ tableList }) {
                             fontSize: "25px",
                             padding: 0
                         }}
-                    >Cancle</Button>
+                    >Finish</Button>
                 </Col>
-                <Col style={{ marginLeft: 50 }}>
-                    <Button type="primary" shape="round"
-                        style={{
-                            backgroundColor: "#86DBD4",
-                            borderColor: "#86DBD4",
-                            width: "250px",
-                            height: "40px",
-                            fontSize: "25px",
-                            padding: 0
-                        }}
-                    >Next</Button>
-                </Col>
+                
             </Row>
         </>
     )
