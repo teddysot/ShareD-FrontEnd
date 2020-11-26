@@ -17,9 +17,11 @@ const getRole = () => {
   return "GUEST";
 };
 
-export default {
+const LocalStorageService = {
   setToken,
   getToken,
   removeToken,
   getRole,
-};
+}
+
+export default LocalStorageService
