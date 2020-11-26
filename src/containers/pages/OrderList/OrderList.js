@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Button, List, Avatar } from "antd";
 import OrderListItem from "../OrderListItem/OrderListItem";
+import axios from "axios";
 
 const orderData = [
   {
@@ -77,6 +78,21 @@ function OrderList() {
 
   const [totalPrice, setTotalPrice] = useState(0); // [ ตัวแปร , ฟังชั่นเอาไว้ set ค่าตัวแปร ]
 
+  const getTotalBill = () => {
+    console.log("getTotalBill");
+    axios.get('/checkout/total-bill/1')
+      .then(res => {
+        const totalBill = res.data.targetTableMenus 
+        console.log(totalBill);
+        setData(totalBill)
+      })
+      .catch(err => {
+        
+        
+      })
+
+  }
+
   const getTotal = () => {
     return data.reduce((acc, item) => {
       //reduce ฟังชั่น เอาใว้รวมค่าใน array // acc เป็นตัวแปรเอาไว้รวมค่า
@@ -86,7 +102,7 @@ function OrderList() {
 
   //ไปดึงข้อมูลมากจาก orderData
   useEffect(() => {
-    setData(orderData);
+    getTotalBill()
     return () => {};
   }, []); // [] รันครั้งแรกครั้งเดียว
 
@@ -112,9 +128,20 @@ function OrderList() {
         {/* เรียก component จาก orderlistitem มาแสดงและส่ง props */}
         <OrderListItem title="Your Amount" data={data} totalPrice={totalPrice} isYour={true} /> {/*จะส่งข้อมูลเข้าไปอีก component ต้องส่งผ่าน props*/}
         <OrderListItem title="Total Amount" data={data} totalPrice={totalPrice} isYour={false} />
-      </Row>      
+      </Row>   
+          
     </div>
   );
 }
 
 export default OrderList;
+
+
+
+
+
+
+
+
+
+
