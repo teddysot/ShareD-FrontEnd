@@ -1,7 +1,10 @@
-import React from "react";
-import { Row, Col, List, Avatar, Button, Divider } from "antd";
+import React, { useState } from "react";
+import { Row, Col, List, Avatar, Button, Modal } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 function OrderListItem(props) {
+  const { toggleModal } = props;
+
   return (
     <Col
       span={10}
@@ -14,7 +17,12 @@ function OrderListItem(props) {
     >
       <div style={{ padding: "10px" }}>{props.title}</div>
       <List
-        style={{ overflow: "auto", height: "80%", borderBottom: "1px solid #ccc",borderTop: "1px solid #ccc" }}
+        style={{
+          overflow: "auto",
+          height: "80%",
+          borderBottom: "1px solid #ccc",
+          borderTop: "1px solid #ccc",
+        }}
         itemLayout="horizontal"
         dataSource={props.data}
         renderItem={(item) => (
@@ -28,18 +36,38 @@ function OrderListItem(props) {
                   }}
                 >
                   <Col span={6}>
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    <Avatar src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg" />
                   </Col>
                   <Col span={6}>{item.name}</Col>
                   <Col span={6}>x{item.quantity}</Col>
-                  <Col span={6}>{item.quantity * item.price}</Col>
+                  <Col span={6}>
+                    ฿{item.quantity * item.price}
+                    <Button
+                      type="text"
+                      style={{ marginLeft: "5px", color: "blue" }}
+                      icon={<PlusCircleOutlined style={{ padding: "0 0 " }} />}
+                      size="small"
+                    />
+                    <Button
+                      type="text"
+                      style={{ marginLeft: "5px" }}
+                      icon={<PlusCircleOutlined style={{ padding: "0 0 " }} />}
+                      size="small"
+                    />
+                    <Button
+                      type="text"
+                      style={{ marginLeft: "5px" }}
+                      icon={<PlusCircleOutlined style={{ padding: "0 0 " }} />}
+                      size="small"
+                    />
+                  </Col>
                 </Row>
               }
             />
           </List.Item>
         )}
       />
-      
+
       <Row
         style={{
           display: "flex",

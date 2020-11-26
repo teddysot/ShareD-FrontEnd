@@ -28,7 +28,7 @@ const roles = {
     components.register
   ],
   USER: [
-    components.chooseMenus
+    components.chooseMenus,
     components.orderList
 
   ]
