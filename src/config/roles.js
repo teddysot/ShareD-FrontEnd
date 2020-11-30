@@ -3,6 +3,7 @@ import Register from "../containers/pages/Register/Register";
 import Otp from "../containers/pages/OTP/OTPVerify";
 import ConfirmOTP from "../containers/pages/ConfirmOTP/ConfirmOTP";
 import InputCode from "../containers/pages/InputCode/InputCode";
+import Bills from "../containers/pages/Bills/Bills";
 
 const components = {
   login: {
@@ -25,6 +26,10 @@ const components = {
     path: "/inputcode",
     page: InputCode
   },
+  bills: {
+    path: "/bills",
+    page: Bills
+  }
 };
 
 const roles = {
@@ -37,6 +42,7 @@ const roles = {
   ],
   USER: [
     components.inputcode,
+    components.bills
   ]
 }
 
