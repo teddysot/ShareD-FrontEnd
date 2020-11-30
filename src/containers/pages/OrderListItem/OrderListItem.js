@@ -3,7 +3,7 @@ import { Row, Col, List, Avatar, Button, Modal } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
 function OrderListItem(props) {
-  const { toggleModal } = props;
+  const { toggleModal, finishButton } = props;
 
   return (
     <Col
@@ -30,36 +30,63 @@ function OrderListItem(props) {
             <List.Item.Meta
               title={
                 <Row
+                  onClick={toggleModal}
                   style={{
+                    cursor: "pointer",
                     display: "flex",
                     justifyContent: "space-between",
                   }}
                 >
-                  <Col span={6}>
-                    <Avatar src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg" />
+                  <Col span={4}>
+                    <Avatar src={item.image_url} />
                   </Col>
-                  <Col span={6}>{item.name}</Col>
-                  <Col span={6}>x{item.quantity}</Col>
-                  <Col span={6}>
+                  <Col
+                    span={7}
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {item.users.map((user,idx) =>
+                      user ? (
+                        <Avatar src="https://image.flaticon.com/icons/png/512/64/64572.png" />
+                      ) : null
+                    )}
+                  </Col>
+                  <Col
+                    span={6}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {item.name}
+                  </Col>
+                  <Col
+                    span={2}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    x{item.quantity}
+                  </Col>
+                  <Col
+                    span={5}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
                     ฿{item.quantity * item.price}
-                    <Button
-                      type="text"
-                      style={{ marginLeft: "5px", color: "blue" }}
-                      icon={<PlusCircleOutlined style={{ padding: "0 0 " }} />}
-                      size="small"
-                    />
-                    <Button
-                      type="text"
-                      style={{ marginLeft: "5px" }}
-                      icon={<PlusCircleOutlined style={{ padding: "0 0 " }} />}
-                      size="small"
-                    />
-                    <Button
-                      type="text"
-                      style={{ marginLeft: "5px" }}
-                      icon={<PlusCircleOutlined style={{ padding: "0 0 " }} />}
-                      size="small"
-                    />
                   </Col>
                 </Row>
               }
@@ -89,7 +116,7 @@ function OrderListItem(props) {
                 fontSize: "18px",
               }}
             >
-              Checkout
+              {finishButton}
             </Button>
           ) : null}
         </Col>

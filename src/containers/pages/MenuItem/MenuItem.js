@@ -4,7 +4,7 @@ import { Row, Col, Card } from "antd";
 const { Meta } = Card;
 
 function MenuItem(props) {
-  const { toggleModal } = props;
+  const { toggleModal, setSelectedMenu, mockupMenu } = props;
   return (
     <Col
       span={10}
@@ -32,132 +32,30 @@ function MenuItem(props) {
             height: "50%",
           }}
         >
-          <Card
-            onClick={toggleModal}
-            hoverable
-            style={{ width: "25vh", margin: "15px 11px" }}
-            cover={
-              <img
-                style={{ width: "100%", height: "20vh", objectFit: "cover" }}
-                alt="example"
-                src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg"
+          {mockupMenu.map((menu, idx) => (
+            <Card
+              key={idx}
+              onClick={() => {
+                setSelectedMenu(idx);
+                toggleModal();
+              }}
+              hoverable
+              style={{ width: "25vh", margin: "15px 11px" }}
+              cover={
+                <img
+                  style={{ width: "100%", height: "20vh", objectFit: "cover" }}
+                  alt="example"
+                  src={menu.image_url}
+                />
+              }
+            >
+              <Meta
+                style={{ padding: "0 0" }}
+                title={menu.name}
+                description={`฿${menu.price}`}
               />
-            }
-          >
-            <Meta
-              style={{ padding: "0 0" }}
-              title="Salmon"
-              description="฿300-"
-            />
-          </Card>
-          <Card
-            onClick={toggleModal}
-            hoverable
-            style={{ width: "25vh", margin: "15px 11px" }}
-            cover={
-              <img
-                style={{ width: "100%", height: "20vh", objectFit: "cover" }}
-                alt="example"
-                src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg"
-              />
-            }
-          >
-            <Meta
-              style={{ padding: "0 0" }}
-              title="Salmon"
-              description="฿300-"
-            />
-          </Card>
-          <Card
-            onClick={toggleModal}
-            hoverable
-            style={{ width: "25vh", margin: "15px 11px" }}
-            cover={
-              <img
-                style={{ width: "100%", height: "20vh", objectFit: "cover" }}
-                alt="example"
-                src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg"
-              />
-            }
-          >
-            <Meta
-              style={{ padding: "0 0" }}
-              title="Salmon"
-              description="฿300-"
-            />
-          </Card>
-          <Card
-            onClick={toggleModal}
-            hoverable
-            style={{ width: "25vh", margin: "15px 11px" }}
-            cover={
-              <img
-                style={{ width: "100%", height: "20vh", objectFit: "cover" }}
-                alt="example"
-                src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg"
-              />
-            }
-          >
-            <Meta
-              style={{ padding: "0 0" }}
-              title="Salmon"
-              description="฿300-"
-            />
-          </Card>
-          <Card
-            onClick={toggleModal}
-            hoverable
-            style={{ width: "25vh", margin: "15px 11px" }}
-            cover={
-              <img
-                style={{ width: "100%", height: "20vh", objectFit: "cover" }}
-                alt="example"
-                src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg"
-              />
-            }
-          >
-            <Meta
-              style={{ padding: "0 0" }}
-              title="Salmon"
-              description="฿300-"
-            />
-          </Card>
-          <Card
-            onClick={toggleModal}
-            hoverable
-            style={{ width: "25vh", margin: "15px 11px" }}
-            cover={
-              <img
-                style={{ width: "100%", height: "20vh", objectFit: "cover" }}
-                alt="example"
-                src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg"
-              />
-            }
-          >
-            <Meta
-              style={{ padding: "0 0" }}
-              title="Salmon"
-              description="฿300-"
-            />
-          </Card>
-          <Card
-            onClick={toggleModal}
-            hoverable
-            style={{ width: "25vh", margin: "15px 11px" }}
-            cover={
-              <img
-                style={{ width: "100%", height: "20vh", objectFit: "cover" }}
-                alt="example"
-                src="https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg"
-              />
-            }
-          >
-            <Meta
-              style={{ padding: "0 0" }}
-              title="Salmon"
-              description="฿300-"
-            />
-          </Card>
+            </Card>
+          ))}
         </Col>
       </Row>
     </Col>
