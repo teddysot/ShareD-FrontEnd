@@ -2,6 +2,7 @@ import Login from "../containers/pages/Login/Login";
 import Register from "../containers/pages/Register/Register";
 import CreateListTable from "../containers/pages/CreateListTable/CreateListTable"
 import TableList from "../containers/pages/TableList/TableList"
+import TotalTableBill from "../containers/pages/TotalTalbleBill/TotalTableBill"
 
 const components = {
   login: {
@@ -19,6 +20,10 @@ const components = {
   tableList:{
     path: "/table-list",
     page:TableList
+  },
+  totalTableBill:{
+    path: "/total-table-bill",
+    page: TotalTableBill
   }
 };
 
@@ -29,7 +34,8 @@ const roles = {
   ],
   USER: [
     components.createListTable,
-    components.tableList
+    components.tableList,
+    components.totalTableBill
   ]
 }
 
