@@ -39,6 +39,7 @@ const mockupPerson = [
 
 function ModalOrder(props) {
   const {
+    removeOrder,
     toggleModal,
     showMenu,
     selectedMenu,
@@ -85,6 +86,14 @@ function ModalOrder(props) {
       }
       setOrderQuantity((orderQuantity) => orderQuantity - 1);
     }
+  };
+
+  const selectAll = () => {
+    let newSelectedPerson = new Array(mockupPerson.length).fill(false);
+    if (selectedPerson.indexOf(false) != -1) {
+      newSelectedPerson = new Array(mockupPerson.length).fill(true);
+    }
+    setSelectedPerson(newSelectedPerson);
   };
 
   const resetOptions = () => {
@@ -222,6 +231,47 @@ function ModalOrder(props) {
               margin: "20px ",
             }}
           >
+            {/* /////////////////////////////////////////////////////////////// All */}
+
+            <Button
+              type="primary"
+              shape="round"
+              onClick={selectAll}
+              style={{
+                backgroundColor: "#86DBD4",
+                borderColor: "#86DBD4",
+                width: "150px",
+                height: "40px",
+                fontSize: "18px",
+              }}
+            >
+              All
+            </Button>
+
+            {/* /////////////////////////////////////////////////////////////// Remove */}
+
+            {isEditing ? (
+              <Button
+              onClick={() => {
+                  removeOrder(editItem)
+                  toggleModal()
+              }}
+                type="primary"
+                shape="round"
+                style={{
+                  backgroundColor: "#86DBD4",
+                  borderColor: "#86DBD4",
+                  width: "150px",
+                  height: "40px",
+                  fontSize: "18px",
+                }}
+              >
+                Remove
+              </Button>
+            ) : null}
+
+            {/* /////////////////////////////////////////////////////////////// Confirm */}
+
             <Button
               disabled={!showConfirm}
               onClick={() => {
@@ -252,6 +302,9 @@ function ModalOrder(props) {
             >
               Confirm
             </Button>
+
+            {/* /////////////////////////////////////////////////////////////// Cancel */}
+
             <Button
               onClick={toggleModal}
               type="primary"

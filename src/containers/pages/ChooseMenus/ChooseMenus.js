@@ -120,6 +120,13 @@ function ChooseMenus(props) {
     setIsEditing(false);
   };
 
+  const removeOrder = (idx) => {
+    let newOrderData = [...orderData];
+    newOrderData.splice(idx, 1);
+    setOrderData(newOrderData);
+    setIsEditing(false);
+  };
+
   const getTotal = () => {
     return orderData.reduce((acc, item) => {
       //reduce ฟังชั่น เอาใว้รวมค่าใน array // acc เป็นตัวแปรเอาไว้รวมค่า
@@ -140,6 +147,7 @@ function ChooseMenus(props) {
     <div style={{ height: "100vh", width: "100vw" }}>
       {showMenu ? (
         <ModalOrder
+          removeOrder={removeOrder}
           isEditing={isEditing}
           editItem={editItem}
           editOrder={editOrder}
