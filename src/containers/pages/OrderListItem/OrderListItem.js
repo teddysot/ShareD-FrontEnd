@@ -3,7 +3,7 @@ import { Row, Col, List, Avatar, Button, Modal } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
 function OrderListItem(props) {
-  const { toggleModal, finishButton } = props;
+  const { toggleModal, finishButton, setIsEditing, setEditItem } = props;
 
   return (
     <Col
@@ -25,12 +25,16 @@ function OrderListItem(props) {
         }}
         itemLayout="horizontal"
         dataSource={props.data}
-        renderItem={(item) => (
+        renderItem={(item, idx) => (
           <List.Item>
             <List.Item.Meta
               title={
                 <Row
-                  onClick={toggleModal}
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditItem(idx);
+                    toggleModal()
+                  }}
                   style={{
                     cursor: "pointer",
                     display: "flex",
@@ -49,7 +53,7 @@ function OrderListItem(props) {
                       flexWrap: "wrap",
                     }}
                   >
-                    {item.users.map((user,idx) =>
+                    {item.users.map((user, idx) =>
                       user ? (
                         <Avatar src="https://image.flaticon.com/icons/png/512/64/64572.png" />
                       ) : null

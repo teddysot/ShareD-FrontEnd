@@ -104,11 +104,20 @@ function ChooseMenus(props) {
   const [totalPrice, setTotalPrice] = useState(0); // [ ตัวแปร , ฟังชั่นเอาไว้ set ค่าตัวแปร ]
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [orderData, setOrderData] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editItem, setEditItem] = useState(null);
 
   const addOrder = (order) => {
     const newOrderData = [...orderData];
     newOrderData.push(order);
     setOrderData(newOrderData);
+  };
+
+  const editOrder = (order, idx) => {
+    const newOrderData = [...orderData];
+    newOrderData[idx] = order;
+    setOrderData(newOrderData);
+    setIsEditing(false);
   };
 
   const getTotal = () => {
@@ -131,7 +140,12 @@ function ChooseMenus(props) {
     <div style={{ height: "100vh", width: "100vw" }}>
       {showMenu ? (
         <ModalOrder
-          selectedMenu={mockupMenu[selectedMenu]}
+          isEditing={isEditing}
+          editItem={editItem}
+          editOrder={editOrder}
+          selectedMenu={
+            isEditing ? orderData[editItem] : mockupMenu[selectedMenu]
+          }
           showMenu={showMenu}
           toggleModal={toggleModal}
           addOrder={addOrder}
@@ -150,6 +164,8 @@ function ChooseMenus(props) {
       <Row style={{ justifyContent: "center", width: "100vw", height: "60vh" }}>
         {/* เรียก component จาก orderlistitem มาแสดงและส่ง props */}
         <OrderListItem
+          setEditItem={setEditItem}
+          setIsEditing={setIsEditing}
           title="Your Amount"
           data={orderData}
           totalPrice={totalPrice}

@@ -38,12 +38,27 @@ const mockupPerson = [
 ];
 
 function ModalOrder(props) {
-  const { toggleModal, showMenu, selectedMenu, addOrder } = props;
+  const {
+    toggleModal,
+    showMenu,
+    selectedMenu,
+    addOrder,
+    isEditing,
+    editItem,
+    editOrder,
+  } = props;
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(
     new Array(mockupPerson.length).fill(false)
   );
+
+  useEffect(() => {
+    if (isEditing) {
+      setSelectedPerson(selectedMenu.users);
+      setOrderQuantity(selectedMenu.quantity);
+    }
+  }, []);
 
   useEffect(() => {
     checkPerson();
@@ -210,7 +225,18 @@ function ModalOrder(props) {
             <Button
               disabled={!showConfirm}
               onClick={() => {
-                newOrder();
+                if (isEditing) {
+                  const order = {
+                    users: [...selectedPerson],
+                    name: selectedMenu.name,
+                    quantity: orderQuantity,
+                    price: selectedMenu.price,
+                    image_url: selectedMenu.image_url,
+                  };
+                  editOrder(order, editItem);
+                } else {
+                  newOrder();
+                }
                 toggleModal();
                 resetOptions();
               }}
