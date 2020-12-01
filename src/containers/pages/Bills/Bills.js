@@ -40,24 +40,34 @@ function Bills() {
 
     return (
         <>
-            <Row style={{ marginTop: 20, marginBottom: 0, marginLeft: "1rem" }}>
+            <Row style={{ marginTop: "1rem", marginBottom: 0, marginLeft: "1rem" }}>
                 <Col span={6}
                     style={{
                         backgroundColor: "#F5F5F5",
-                        height: "70vh",
+                        height: "80vh",
                         borderRadius: "20px"
                     }}>
+                    <Row justify="center"
+                        style={{
+                            backgroundColor: "#86DBD4",
+                            borderRadius: "20px",
+                        }}>
+                        <h2>Customer 1</h2>
+                    </Row>
                     <Table
                         columns={columns}
                         dataSource={data}
                         pagination={false}
-                        title={() => 'Customer 1'}
-                        footer={() => 'รวมทั้งหมด : 3,000 บาท'}
+                    // title={() => 'Customer 1'}
+                    // footer={() => 'รวมทั้งหมด : 3,000 บาท'}
                     />
-                    <Row justify="center" style={{ marginTop: 20 }}>
+                    <Row justify="center" style={{ marginTop: "1rem" }}>
+                        <h2>รวมทั้งหมด : 3,000 บาท</h2>
+                    </Row>
+                    <Row justify="center" style={{ marginTop: "1rem" }}>
                         <Progress type="circle" percent={100} width={50} status="exception" />
                     </Row>
-                    <Row justify="space-around">
+                    <Row justify="space-around" style={{ marginTop: "1rem" }}>
                         <Col>
                             <Button type="primary" shape="round"
                                 style={{
