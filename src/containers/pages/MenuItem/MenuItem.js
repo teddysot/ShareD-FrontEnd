@@ -43,7 +43,7 @@ function MenuItem(props) {
               style={{ width: "25vh", margin: "15px 11px" }}
               cover={
                 <img
-                  style={{ width: "100%", height: "20vh", objectFit: "cover" }}
+                  style={{ width: "100%", height: "25vh", objectFit: "cover" }}
                   alt="example"
                   src={menu.image_url}
                 />
