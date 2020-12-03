@@ -55,7 +55,6 @@ function ChooseMenus({menuList,onSetMenuList}) {
   useEffect(() => {
     axios.get('/menus')
       .then(res => {
-      console.log(res.data.allMenu)
       onSetMenuList(res.data.allMenu)
     })
   },[])
