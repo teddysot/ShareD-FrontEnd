@@ -4,6 +4,9 @@ import Otp from "../containers/pages/OTP/OTPVerify";
 import ConfirmOTP from "../containers/pages/ConfirmOTP/ConfirmOTP";
 import InputCode from "../containers/pages/InputCode/InputCode";
 import Welcome from "../containers/pages/Welcome/Welcome";
+import CreateListTable from "../containers/pages/CreateListTable/CreateListTable"
+import TableList from "../containers/pages/TableList/TableList"
+import TotalTableBill from "../containers/pages/TotalTalbleBill/TotalTableBill"
 
 
 const components = {
@@ -32,6 +35,18 @@ const components = {
     path: "/inputcode",
     page: InputCode
   },
+  createListTable: {
+    path: "/create-list-table",
+    page: CreateListTable
+  },
+  tableList:{
+    path: "/table-list",
+    page:TableList
+  },
+  totalTableBill:{
+    path: "/total-table-bill",
+    page: TotalTableBill
+  }
 };
 
 const roles = {
@@ -45,7 +60,10 @@ const roles = {
   ],
   USER: [
     components.inputcode,
-    components.welcome
+    components.welcome,
+    components.createListTable,
+    components.tableList,
+    components.totalTableBill
   ]
 }
 

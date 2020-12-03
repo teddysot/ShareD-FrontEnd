@@ -8,6 +8,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { BrowserRouter } from 'react-router-dom';
 import socketReducer from './store/reducers/socket'
 import roleReducer from './store/reducers/role'
+import tableReducer from './store/reducers/tableList'
 import thunk from 'redux-thunk'
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
@@ -16,7 +17,8 @@ AOS.init();
 
 const rootReducer = combineReducers({
   socket: socketReducer,
-  role: roleReducer
+  role: roleReducer,
+  tableList: tableReducer
 })
 
 const logger = (store) => {

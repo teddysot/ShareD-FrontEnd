@@ -5,6 +5,7 @@ import LocalStorageService from "../../services/LocalStorageService";
 
 const initialState = {
     socket: null,
+    roomCode: null
 };
 
 const reducer = (state = initialState, action) => {
