@@ -1,5 +1,7 @@
 import Login from "../containers/pages/Login/Login";
 import Register from "../containers/pages/Register/Register";
+import ChooseMenus from "../containers/pages/ChooseMenus/ChooseMenus";
+import OrderList from "../containers/pages/OrderList/OrderList";
 import Otp from "../containers/pages/OTP/OTPVerify";
 import ConfirmOTP from "../containers/pages/ConfirmOTP/ConfirmOTP";
 import InputCode from "../containers/pages/InputCode/InputCode";
@@ -22,6 +24,14 @@ const components = {
   register: {
     path: "/register",
     page: Register
+  },
+  chooseMenus: {
+    path: "/choose-menus",
+    page: ChooseMenus
+  },
+  orderList: {
+    path: "/orderlist",
+    page: OrderList
   },
   otp: {
     path: "/otp",
@@ -59,6 +69,8 @@ const roles = {
 
   ],
   USER: [
+    components.chooseMenus,
+    components.orderList,
     components.inputcode,
     components.welcome,
     components.createListTable,
