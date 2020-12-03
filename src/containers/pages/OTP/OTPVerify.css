@@ -1,0 +1,24 @@
+.RowOTPConfirm{
+   margin-bottom: 1rem;
+}
+.ColOTPConfirm{
+   color: #746953;
+   font-size: 30px;
+}
+.RowConfirm{
+   margin-bottom: 1rem;
+}
+.RowResend{
+   margin-bottom: 1rem;
+}
+.ColResend1{
+   color: #746953;
+   font-size: 20px;
+}
+.Link{
+   font-style: italic;
+   color: #86DBD4;
+}
+.RowButton{
+   margin-bottom: 1rem;
+}

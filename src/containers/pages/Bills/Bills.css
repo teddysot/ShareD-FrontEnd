@@ -1,0 +1,46 @@
+.RowOutline{
+    margin-top: 1rem ; 
+    margin-bottom: 0;
+    margin-left: 1rem;
+}
+.ColOutline{
+    background-color: #F5F5F5;
+    height: 80vh;
+    border-radius: 20px;
+}
+.RowCustomer{
+    background-color:#86DBD4;
+    border-radius: 20px;
+}
+.ColCustomer{
+    font-size: 20px;
+}
+.RowTotal{
+    margin-top: 1rem;
+}
+.ColTotal{
+    color: red;
+    font-size: 20px;
+}
+.RowProgress{
+    margin-top: 1rem;
+}
+.RowButton{
+    margin-top: 1rem;
+}
+.OnlineButton{
+    background-color: #86DBD4;
+    border-color: #86DBD4;
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    padding: 0;
+}
+.CounterButton{
+    background-color: #86DBD4;
+    border-color: #86DBD4;
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    padding: 0;
+}

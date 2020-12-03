@@ -1,4 +1,5 @@
-import React from 'react'
+import '../Bills/Bills.css';
+import React from 'react';
 import { Button, Col, Form, Input, notification, Row, Table, Progress, } from "antd";
 import 'antd/dist/antd.css';
 import { useHistory, withRouter } from 'react-router-dom';
@@ -40,57 +41,40 @@ function Bills() {
 
     return (
         <>
-            <Row style={{ marginTop: "1rem", marginBottom: 0, marginLeft: "1rem" }}>
-                <Col span={6}
-                    style={{
-                        backgroundColor: "#F5F5F5",
-                        height: "80vh",
-                        borderRadius: "20px"
-                    }}>
-                    <Row justify="center"
-                        style={{
-                            backgroundColor: "#86DBD4",
-                            borderRadius: "20px",
-                        }}>
-                        <h2>Customer 1</h2>
+            <Row className="RowOutline">
+                <Col className="ColOutline" span={6} >
+                    <Row className="RowCustomer" justify="center">
+                        <Col className="ColCustomer">Customer 1</Col>
                     </Row>
                     <Table
                         columns={columns}
                         dataSource={data}
                         pagination={false}
                     // title={() => 'Customer 1'}
-                    // footer={() => 'รวมทั้งหมด : 3,000 บาท'}
+                    // footer={() => 'Total : 3,000 บาท'}
                     />
-                    <Row justify="center" style={{ marginTop: "1rem" }}>
-                        <h2>รวมทั้งหมด : 3,000 บาท</h2>
+                    <Row className="RowTotal" justify="center">
+                        <Col className="ColTotal">Total : 3,000 บาท</Col>
                     </Row>
-                    <Row justify="center" style={{ marginTop: "1rem" }}>
-                        <Progress type="circle" percent={100} width={50} status="exception" />
+                    <Row className="RowProgress" justify="center">
+                        <Progress
+                            type="circle"
+                            percent={100}
+                            width={50}
+                            status="exception" />
                     </Row>
-                    <Row justify="space-around" style={{ marginTop: "1rem" }}>
+                    <Row className="RowButton" justify="space-around">
                         <Col>
-                            <Button type="primary" shape="round"
-                                style={{
-                                    backgroundColor: "#86DBD4",
-                                    borderColor: "#86DBD4",
-                                    width: "100px",
-                                    height: "40px",
-                                    fontSize: "25px",
-                                    padding: 0
-                                }}
+                            <Button className="OnlineButton"
+                                type="primary"
+                                shape="round"
                                 onClick={() => history.push("/")}
                             >Online</Button>
                         </Col>
                         <Col>
-                            <Button type="primary" shape="round"
-                                style={{
-                                    backgroundColor: "#86DBD4",
-                                    borderColor: "#86DBD4",
-                                    width: "100px",
-                                    height: "40px",
-                                    fontSize: "25px",
-                                    padding: 0
-                                }}
+                            <Button className="CounterButton"
+                                type="primary"
+                                shape="round"
                                 onClick={() => history.push("/")}
                             >Counter</Button>
                         </Col>

@@ -1,3 +1,4 @@
+import './OTPVerify.css'
 import React, { useState } from "react";
 import { Button, Col, Form, Input, notification, Row, } from "antd";
 import 'antd/dist/antd.css';
@@ -7,13 +8,36 @@ import axios from "../../../config/axios";
 let targetEmail;
 
 function OTPVerify() {
+  const InputStyle = {
+    fontSize: "20px",
+    fontStyle: "italic",
+    textAlign: "center"
+  }
+  const ConfirmButton = {
+    backgroundColor: "#86DBD4",
+    borderColor: "#86DBD4",
+    width: "250px",
+    height: "40px",
+    fontSize: "25px",
+    padding: 0
+  }
+  const CancelButton = {
+    color: "#86DBD4",
+    backgroundColor: "#ffffff",
+    borderColor: "#86DBD4",
+    width: "250px",
+    height: "40px",
+    fontSize: "25px",
+    padding: 0
+  }
+
   const [otp, setOTP] = useState("");
   const [allowResend, setAllowResend] = useState(true);
   const history = useHistory();
   const location = useLocation();
 
   if (!targetEmail) {
-    targetEmail = location.state.email;
+    targetEmail = location?.state?.email;
   }
 
   const onSubmit = () => {
@@ -62,67 +86,39 @@ function OTPVerify() {
           <img style={{ maxHeight: "132px", margin: "50px" }} src="https://i.imgur.com/4TeZqYS.png" alt="logo" />
         </Col>
       </Row>
-
-      <Row justify="center" style={{ marginBottom: 20 }} >
-        <Col>
-          <h1 style={{ color: "#746953" }}>OTP Confirmation</h1>
-        </Col>
+      <Row className="RowOTPConfirm" justify="center">
+        <Col className="ColOTPConfirm">OTP Confirmation</Col>
       </Row>
-
-      <Row justify="center" style={{ marginBottom: 20 }} >
+      <Row className="RowConfirm" justify="center">
         <Col>
           <Input placeholder="Confirm Your OTP"
-            style={{
-              fontSize: "20px",
-              fontStyle: "italic",
-              textAlign: "center"
-            }}
+            style={InputStyle}
             onChange={(e) => setOTP(e.target.value)}
             maxLength={6}
           />
         </Col>
       </Row>
-
-      <Row justify="center" style={{ marginBottom: 20 }} >
-        <Col>
-          <h2 style={{ color: "#746953" }}>Didn’t received? Click {<Link
-            style={{
-              fontStyle: "italic",
-              color: "#86DBD4"
-            }}
+      <Row className="RowResend" justify="center">
+        <Col className="ColResend1">Didn’t received? Click
+        {<Link className="Link"
             onClick={resendOTP}
-          >here</Link>} to resend</h2>
+          > here</Link>} to resend
         </Col>
       </Row>
-
-      <Row justify="center" style={{ marginBottom: 20 }} >
+      <Row className="RowButton" justify="center">
         <Col>
-          <Button type="primary" shape="round"
-            style={{
-              backgroundColor: "#86DBD4",
-              borderColor: "#86DBD4",
-              width: "250px",
-              height: "40px",
-              fontSize: "25px",
-              padding: 0
-            }}
+          <Button
+            type="primary"
+            shape="round"
+            style={ConfirmButton}
             onClick={onSubmit}
           >Confirm</Button>
         </Col>
       </Row>
-
       <Row justify="center" style={{ marginBottom: 20 }} >
         <Col>
           <Button type="primary" shape="round"
-            style={{
-              color: "#86DBD4",
-              backgroundColor: "#ffffff",
-              borderColor: "#86DBD4",
-              width: "250px",
-              height: "40px",
-              fontSize: "25px",
-              padding: 0
-            }}
+            style={CancelButton}
             onClick={() => history.push("/")}
           >Cancel</Button>
         </Col>

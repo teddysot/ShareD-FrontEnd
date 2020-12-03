@@ -1,0 +1,31 @@
+.RowLogo{
+    margin-bottom: 1rem;
+ }
+.DivMessage{
+    color: #746953;
+    font-size: 30px;
+}
+.InputCode{
+    font-size: 20px;
+    font-style: italic;
+    text-align: center;
+}
+.Button{
+    margin-top: 3rem;
+}
+.SubmitButton {
+    background-color: #86DBD4;
+    border-color: #86DBD4;
+    width: 250px;
+    height: 40px;
+    font-size: 25px;
+    padding: 0
+}
+.LogoutButton {
+    background-color: #86DBD4;
+    border-color: #86DBD4;
+    width: 250px;
+    height: 40px;
+    font-size: 25px;
+    padding: 0
+}

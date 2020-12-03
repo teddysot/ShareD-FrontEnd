@@ -1,3 +1,4 @@
+import '../InputCode/InputCode.css'
 import React from 'react'
 import { Button, Col, Form, Input, notification, Row, } from "antd";
 import 'antd/dist/antd.css';
@@ -13,43 +14,28 @@ function InputCode({ socket }) {
 
     return (
         <>
-            <Row justify="center" style={{ marginTop: 0, marginBottom: 0 }} >
+            <Row className="RowLogo" justify="center">
                 <Col xs={20} md={14} lg={9}>
-                    <img style={{ maxHeight: "132px", margin: "50px" }}
-                        src="https://i.imgur.com/4TeZqYS.png" alt="logo" />
+                    <img style={{ maxHeight: "132px", margin: "50px" }} src="https://i.imgur.com/4TeZqYS.png" alt="logo" />
                 </Col>
             </Row>
-
-            <Row justify="center" style={{ marginBottom: 0 }} >
+            <Row justify="center">
                 <Col>
-                    <Form
-                        name="formInput"
-                        onFinish={onSubmit}
-                    >
-                        <div>
-                            <h1 style={{ color: "#746953" }}>Enter Your Table Code</h1>
-                        </div>
+                    <Form name="formInput"
+                        onFinish={onSubmit}>
+                        <div className="DivMessage">Enter Your Table Code</div >
                         <Form.Item justify="center"
                             name="inputCode"
-                            rules={[{ required: true, message: 'Please Input Your Table Code!' }]}
-                        >
-                            <Input placeholder="--- ---"
-                                style={{
-                                    fontSize: "20px",
-                                    fontStyle: "italic",
-                                    textAlign: "center"
-                                }} />
-                        </Form.Item>
-                        <Form.Item style={{ marginTop: 50 }}>
-                            <Button type="primary" htmlType="submit" shape="round"
-                                style={{
-                                    backgroundColor: "#86DBD4",
-                                    borderColor: "#86DBD4",
-                                    width: "250px",
-                                    height: "40px",
-                                    fontSize: "25px",
-                                    padding: 0
-                                }}
+                            rules={
+                                [{ required: true, message: 'Please Input Your Table Code!' }]
+                            }>
+                            <Input className="InputCode" placeholder="--- ---" />
+                        </Form.Item >
+                        <Form.Item className="Button">
+                            <Button className="SubmitButton"
+                                type="primary"
+                                htmlType="submit"
+                                shape="round"
                             >Submit</Button>
                         </Form.Item>
                     </Form>
@@ -57,16 +43,9 @@ function InputCode({ socket }) {
             </Row>
 
             <Row justify="center">
-                <Button type="primary" shape="round"
-                    style={{
-                        color: "#86DBD4",
-                        backgroundColor: "#ffffff",
-                        borderColor: "#86DBD4",
-                        width: "250px",
-                        height: "40px",
-                        fontSize: "25px",
-                        padding: 0
-                    }}
+                <Button className="LogoutButton"
+                    type="primary"
+                    shape="round"
                 >Logout</Button>
             </Row>
         </>

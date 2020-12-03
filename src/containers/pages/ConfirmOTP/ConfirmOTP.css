@@ -1,0 +1,19 @@
+.RowLogo{
+   margin-bottom: 1rem;
+}
+.RowConfirmMessage{
+   margin-bottom: 1rem;
+}
+.ColConfirmMessage{
+   color: #746953;
+   font-style: italic;
+   font-size: 30px;
+}
+.DoneButton{
+ background-color: #86DBD4;
+ border-color: #86DBD4;
+ width: 250px;
+ height: 40px;
+ font-size: 20px;
+ padding: 0;
+}
