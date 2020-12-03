@@ -31,7 +31,7 @@ function ConfirmOTP() {
                             fontSize: "25px",
                             padding: 0
                         }}
-                        onClick={() => history.push("/")}
+                        onClick={() => history.push("/login")}
                     >Done</Button>
                 </Col>
             </Row>

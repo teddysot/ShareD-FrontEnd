@@ -20,7 +20,7 @@ function OTPVerify() {
     axios.get(`/user/verify?otp=${otp}&email=${targetEmail}`)
       .then(res => {
         notification.success({
-          description: "Your email verified"
+          description: "Your email has been verified"
         })
         history.push("/confirm-otp")
       })

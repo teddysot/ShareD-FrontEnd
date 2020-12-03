@@ -10,11 +10,17 @@ const reducer = (state = initialState, action) => {
         case SET_ROLE:
             return {
                 ...state,
-                role: action.value
+                role: setRole(action.value)
             };
         default:
             return state;
     }
 };
+
+const setRole = (value) => {
+
+    console.log(value);
+    return value
+}
 
 export default reducer;

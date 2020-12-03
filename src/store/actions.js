@@ -6,6 +6,6 @@ export const setupSocket = () => {
     return { type: SETUP_SOCKET }
 }
 
-export const setRole = () => {
-    return { type: SET_ROLE }
+export const setRole = (value) => {
+    return { type: SET_ROLE, value }
 }
