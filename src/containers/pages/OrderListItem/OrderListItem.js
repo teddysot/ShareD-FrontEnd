@@ -1,7 +1,10 @@
-import React from "react";
-import { Row, Col, List, Avatar, Button, Divider } from "antd";
+import React, { useState } from "react";
+import { Row, Col, List, Avatar, Button, Modal } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 function OrderListItem(props) {
+  const { toggleModal, finishButton, setIsEditing, setEditItem } = props;
+
   return (
     <Col
       span={10}
@@ -14,32 +17,88 @@ function OrderListItem(props) {
     >
       <div style={{ padding: "10px" }}>{props.title}</div>
       <List
-        style={{ overflow: "auto", height: "80%", borderBottom: "1px solid #ccc",borderTop: "1px solid #ccc" }}
+        style={{
+          overflow: "auto",
+          height: "80%",
+          borderBottom: "1px solid #ccc",
+          borderTop: "1px solid #ccc",
+        }}
         itemLayout="horizontal"
         dataSource={props.data}
-        renderItem={(item) => (
+        renderItem={(item, idx) => (
           <List.Item>
             <List.Item.Meta
               title={
                 <Row
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditItem(idx);
+                    toggleModal()
+                  }}
                   style={{
+                    cursor: "pointer",
                     display: "flex",
                     justifyContent: "space-between",
                   }}
                 >
-                  <Col span={6}>
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                  <Col span={4}>
+                    <Avatar src={item.image_url} />
                   </Col>
-                  <Col span={6}>{item.name}</Col>
-                  <Col span={6}>x{item.quantity}</Col>
-                  <Col span={6}>{item.quantity * item.price}</Col>
+                  <Col
+                    span={7}
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {item.users.map((user, idx) =>
+                      user ? (
+                        <Avatar src="https://image.flaticon.com/icons/png/512/64/64572.png" />
+                      ) : null
+                    )}
+                  </Col>
+                  <Col
+                    span={6}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {item.name}
+                  </Col>
+                  <Col
+                    span={2}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    x{item.quantity}
+                  </Col>
+                  <Col
+                    span={5}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    ฿{item.quantity * item.price}
+                  </Col>
                 </Row>
               }
             />
           </List.Item>
         )}
       />
-      
+
       <Row
         style={{
           display: "flex",
@@ -61,7 +120,7 @@ function OrderListItem(props) {
                 fontSize: "18px",
               }}
             >
-              Checkout
+              {finishButton}
             </Button>
           ) : null}
         </Col>

@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Col, Form, Input, notification, Row } from "antd";
 import axios from 'axios'
 import LocalStorageService from '../../../services/LocalStorageService'
 import { setupSocket, setRole } from '../../../store/actions';
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 function Login(props) {
+  const history = useHistory();
+
   const onFinish = ({ username, password }) => {
     axios.post('/user/login', { username, password })
       .then(res => {
@@ -15,6 +18,7 @@ function Login(props) {
         LocalStorageService.setToken(res.data.token)
         props.onSetRole("USER")
         props.onSetupSocket()
+        history.push('/inputcode')
       })
       .catch(err => {
         notification.error({
@@ -22,6 +26,10 @@ function Login(props) {
         })
       })
   };
+
+  const onRegisterClick = () => {
+    history.push('/register')
+  }
 
   return (
     <Row justify="center">
@@ -50,6 +58,9 @@ function Login(props) {
             <Button htmlType="submit">Login</Button>
           </Row>
         </Form>
+        <Row justify="center">
+          <Button onClick={onRegisterClick}>Register</Button>
+        </Row>
       </Col>
     </Row>
   );
@@ -62,4 +73,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = state => {
+  return {
+    role: state.role.role,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 
 function PrivateRoutes(props) {
 
-  const role = props.role || "GUEST";
+  let role = props.role || "GUEST";
 
   return (
     <Switch>
