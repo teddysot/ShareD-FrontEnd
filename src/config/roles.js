@@ -3,10 +3,17 @@ import Register from "../containers/pages/Register/Register";
 import Otp from "../containers/pages/OTP/OTPVerify";
 import ConfirmOTP from "../containers/pages/ConfirmOTP/ConfirmOTP";
 import InputCode from "../containers/pages/InputCode/InputCode";
+import Welcome from "../containers/pages/Welcome/Welcome";
+
 
 const components = {
-  login: {
+
+  welcome: {
     path: "/",
+    page: Welcome,
+  },
+  login: {
+    path: "/login",
     page: Login
   },
   register: {
@@ -29,6 +36,7 @@ const components = {
 
 const roles = {
   GUEST: [
+    components.welcome,
     components.login,
     components.register,
     components.otp,
@@ -37,6 +45,7 @@ const roles = {
   ],
   USER: [
     components.inputcode,
+    components.welcome
   ]
 }
 
