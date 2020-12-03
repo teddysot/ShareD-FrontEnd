@@ -1,11 +1,43 @@
+import './TableList.css';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Input, Row, Modal, notification } from "antd";
 import { connect } from 'react-redux'
-import { addTable, fetchTable } from '../../../store/actions';
+import { addTable, fetchTable, selectTable } from '../../../store/actions';
 import { useHistory } from 'react-router-dom';
 
+
 function TableList(props) {
-    const { socket, tableList, onAddTable, onFetchTable } = props
+
+    const ButtonModalStyle =
+    {
+        backgroundColor: "#86DBD4",
+        borderColor: "#86DBD4",
+        width: "100px",
+        height: "40px",
+        fontSize: "25px",
+        padding: "0px",
+        marginRight: "10px",
+        marginBottom: "5"
+
+    }
+
+
+    const ButtonModal2Style = {
+        backgroundColor: "#ffffff",
+        borderColor: "#86DBD4",
+        color: "#86DBD4",
+        width: "100px",
+        height: "40px",
+        fontSize: "25px",
+        justifyContent: "right",
+        marginRight: "70",
+        marginLeft: "50",
+        padding: "0px",
+    }
+    const tableButtonStyle = { fontSize: '26px', padding: '10px', width: '100px', height: '100px', backgroundColor: '#86DBD4', marginRight: '20px', marginTop: '20px', color: 'gray', borderRadius: '20px' }
+    const assignButtonStyle = { backgroundColor: "#ffffff", borderColor: "#86DBD4", color: "#86DBD4", width: "250px", height: "40px", fontSize: "25px", padding: "0", marginTop: "40px", marginRight: "40px" }
+    
+    const { socket, tableList, onAddTable, onFetchTable, onTableNum } = props
     const [showModal, setShowModal] = useState(false)
     const [tableNumber, setTableNumber] = useState(0)
 
@@ -18,6 +50,7 @@ function TableList(props) {
     const toggleModal = () => {
         setShowModal(showModal => !showModal)
     }
+
 
     const createTable = () => {
         console.log('click')
@@ -53,6 +86,18 @@ function TableList(props) {
         socket.emit('createTable', { tableNumber })
     }
 
+
+    const tableNum = (selectTableNumber) => {
+        props.onSelectTable(selectTableNumber)
+        history.push('/total-table-bill')
+
+
+    }
+
+
+
+
+
     useEffect(() => {
         if (socket) {
             socket.on('fetchTable', (res) => {
@@ -69,78 +114,39 @@ function TableList(props) {
                 title=""
                 visible={showModal}
                 onCancel={toggleModal}
-                style={{marginBottom: 5}}
+                style={{ marginBottom: 5 }}
                 footer={[
-                    
-                    <Button type="primary" shape="round" onClick={createTable}
-                        style={{
-                            backgroundColor: "#86DBD4",
-                            borderColor: "#86DBD4",
-                            width: "100px",
-                            height: "40px",
-                            fontSize: "25px",
-                            padding: 0,
-                            marginRight:80,
-                            marginBottom: 5,
-                            
-                        }}
+
+                    <Button style={ButtonModalStyle} type="primary" shape="round" onClick={createTable}
                     >Create</Button>,
-                   
-                    <Button type="primary" shape="round" onClick={toggleModal} key={2}
-                        style={{
-                            
-                            backgroundColor: "#ffffff",
-                            borderColor: "#86DBD4",
-                            color: "#86DBD4",
-                            width: "100px",
-                            height: "40px",
-                            fontSize: "25px",
-                            justifyContent: "right",
-                            marginRight:70,
-                            marginLeft:50,
-                            padding: 0
-                        }}
+
+                    <Button style={ButtonModal2Style} type="primary" shape="round" onClick={toggleModal} key={2}
                     >Cancel</Button>
-                    
+
                 ]}
             >
                 <div>
                     <h1 style={{ color: "#86DBD4" }}>Enter Your Table Number</h1>
                 </div>
 
-                <Input placeholder="" onChange={onInputChange}
-                    style={{
-                        fontSize: "20px",
-                        fontStyle: "italic",
-                        textAlign: "center"
-                    }} />
+                <Input className="InputModal" placeholder="" onChange={onInputChange} />
             </Modal>
             <Row justify="end">
-                <Col style={{ float: "right" }}>
-                    <Button type="primary" shape="round" onClick={toggleModal}
-                        style={{
-                            backgroundColor: "#ffffff",
-                            borderColor: "#86DBD4",
-                            color:"#86DBD4",
-                            width: "250px",
-                            height: "40px",
-                            fontSize: "25px",
-                            padding: 0,
-                            marginTop: 40,
-                            marginRight: 40
-
-                        }}>
+                <Col className="ColButtonAssignTable">
+                    <Button style={assignButtonStyle} type="primary" shape="round" onClick={toggleModal}
+                    >
                         Assign Table</Button>
                 </Col>
             </Row>
 
             <Row>
-                <Col span={24} style={{ margin: '50px 50px' }}>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginRight:'60px' }}>
+                <Col span={24} className="colTableNum">
+                    <div className="divTableNum">
                         {tableList.map((table, idx) => (
-                            <div key={idx} style={{ fontSize:'26px',padding:'10px', width: '100px', height: '100px', backgroundColor: '#86DBD4', marginRight: '20px', marginTop: '20px', color: 'gray', borderRadius:'20px' }}>
-                               <a style={{color:'#ffffff'}}> TABLE {table.number} </a> 
-                                </div>
+
+                            <Button key={idx} onClick={() => tableNum(table.number)} style={tableButtonStyle}>
+                                <a style={{ color: '#ffffff' }}> TABLE <br />{table.number} </a>
+                            </Button>
                         ))}
                     </div>
                 </Col>
@@ -160,8 +166,14 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAddTable: (value) => dispatch(addTable(value)),
-        onFetchTable: (value) => dispatch(fetchTable(value))
+        onFetchTable: (value) => dispatch(fetchTable(value)),
+        onSelectTable: (value) => dispatch(selectTable(value))
     };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableList);
+
+
+
+
+

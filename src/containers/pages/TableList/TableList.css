@@ -1,0 +1,39 @@
+
+
+.InputModal{
+    
+        font-size: 20px;
+        font-style: italic;
+        text-align: center;
+    
+}
+.ColButtonAssignTable{
+    float: right;
+}
+
+
+.divTableNum{
+    display: flex;
+   flex-wrap: wrap;
+    justify-content: center;
+    margin-right: 60px;
+}
+
+.colTableNum{
+    margin: auto;
+    margin-left: 35px;
+}
+.divTableNum{
+    margin-left: auto;
+}
+.BtTableNum{
+    font-size: 26px;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    background-color: #86DBD4;
+    margin-right: 20px;
+    margin-top: 20px;
+    color: gray;
+    border-radius: 20px;
+}

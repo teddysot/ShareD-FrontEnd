@@ -4,6 +4,33 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom';
 
 function CreateListTable({ tableList }) {
+
+    const colImgStyle = { maxHeight: "132px", margin: "50px" }
+    const containerColStyle = {
+        backgroundColor: "#EFEFEF",
+        float: "right",
+        height: "15%",
+        width: "20%",
+        padding: "10px",
+        color: "red",
+        borderRadius: "10",
+        marginTop: "40px",
+        fontSize: "16",
+        position: "absolute",
+        right: "3%",
+        top: "0%",
+        zIndex: "1",
+        
+    }
+    const AvatarStyle = { backgroundColor: "#86DBD4" }
+    const buttonFinishStyle = {
+        backgroundColor: "#86DBD4",
+        borderColor: "#86DBD4",
+        width: "250px",
+        height: "40px",
+        fontSize: "25px",
+        padding: 0
+    }
     // เรียกใช้ state tableList จาก redux โดยใช้ mapStateToProps 
     // connect  CreateListTable กับ redux 
 
@@ -32,35 +59,16 @@ function CreateListTable({ tableList }) {
         <>
 
             <Row justify="center">
-                
+
                 <Col span={24}>
-                    <img style={{ maxHeight: "132px", margin: "50px"}} src="https://i.imgur.com/4TeZqYS.png" alt="logo" />
+                    <img style={colImgStyle} src="https://i.imgur.com/4TeZqYS.png" alt="logo" />
                 </Col>
-                </Row>
-                <Row>
-                <Col style={{
-                    // alignItems: "flex-start",
-                    backgroundColor: "#EFEFEF",
-                    float: "right",
-                    height: "15%",
-                    width: "20%",
-                    padding: 10,
-                    color: "red",
-                    borderRadius: 10,
-                    marginTop: 40,
-                    fontSize: 16,
-                    position:'absolute',
-                    right:'3%',
-                    top:'0%',
-                    zIndex:'1'
-                    
-                    
-
-
-                }}>
+            </Row>
+            <Row>
+                <Col style={containerColStyle}>
                     <Row justify="center">
                         <Col >
-                            <h3 style={{color:'salmon'}}>Group Code</h3>
+                            <h3 style={{ color: 'salmon' }}>Group Code</h3>
                         </Col>
                     </Row>
                     <Row justify="center">
@@ -83,7 +91,7 @@ function CreateListTable({ tableList }) {
                         {users.length > 0 ? (users.map((user, idx) => (
                             <div key={idx} style={{ marginRight: 20 }}>
                                 <div>
-                                    <Avatar size={100} src={user.profile_url} style={{ backgroundColor: "#86DBD4" }} />
+                                    <Avatar size={100} src={user.profile_url} style={AvatarStyle} />
                                 </div>
                                 <div>
                                     {user.username}
@@ -98,17 +106,10 @@ function CreateListTable({ tableList }) {
             <Row justify="center" style={{ marginTop: 50 }}>
                 <Col>
                     <Button type="primary" shape="round" onClick={onCancelClick}
-                        style={{
-                            backgroundColor: "#86DBD4",
-                            borderColor: "#86DBD4",
-                            width: "250px",
-                            height: "40px",
-                            fontSize: "25px",
-                            padding: 0
-                        }}
+                        style={buttonFinishStyle}
                     >Finish</Button>
                 </Col>
-                
+
             </Row>
         </>
     )
