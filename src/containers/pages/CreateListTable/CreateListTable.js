@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Button, Col, Input, Row, Avatar } from 'antd';
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom';
+import { BASE_BACKEND_URL } from "../../../config/constants";
 
-function CreateListTable({ tableList }) {
+function CreateListTable({ tableList, userTable, role, socket }) {
 
     const colImgStyle = { maxHeight: "132px", margin: "50px" }
     const containerColStyle = {
@@ -20,7 +21,7 @@ function CreateListTable({ tableList }) {
         right: "3%",
         top: "0%",
         zIndex: "1",
-        
+
     }
     const AvatarStyle = { backgroundColor: "#86DBD4" }
     const buttonFinishStyle = {
@@ -42,6 +43,24 @@ function CreateListTable({ tableList }) {
     const onCancelClick = () => {
         history.push('/table-list')
     }
+
+    useEffect(() => {
+        socket.on('joinTable', (res) => {
+            const resUsers = res.users
+
+            const newUsers = []
+            resUsers.map((user) => {
+                const newUser = {
+                    profile_url: user.profile_url,
+                    username: user.username
+                }
+
+                newUsers.push(newUser)
+            })
+
+            setUsers(newUsers)
+        })
+    }, [])
 
     useEffect(() => {
         if (tableList.length > 0) {
@@ -91,7 +110,7 @@ function CreateListTable({ tableList }) {
                         {users.length > 0 ? (users.map((user, idx) => (
                             <div key={idx} style={{ marginRight: 20 }}>
                                 <div>
-                                    <Avatar size={100} src={user.profile_url} style={AvatarStyle} />
+                                    <Avatar size={100} src={`${BASE_BACKEND_URL}/${user.profile_url}`} style={AvatarStyle} />
                                 </div>
                                 <div>
                                     {user.username}
@@ -117,7 +136,10 @@ function CreateListTable({ tableList }) {
 
 const mapStateToProps = state => {
     return {
-        tableList: state.tableList.tableList
+        socket: state.socketReducer.socket,
+        tableList: state.tableReducer.tableList,
+        userTable: state.userTableReducer.userTable,
+        role: state.userReducer.role
     }
 }
 

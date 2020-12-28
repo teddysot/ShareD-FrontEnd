@@ -199,10 +199,10 @@ function Register(props) {
               rules={[{ required: true, message: 'Please choose your role!' }]}
             >
               <Select placeholder="Select Role" style={{ display: 'flex', width: 120 }}>
-                <Option value="customer">Customer</Option>
-                <Option value="restaurant">Restaurant</Option>
-                <Option value="kitchen">Kitchen</Option>
-                <Option value="admin">Admin</Option>
+                <Option value="customer">CUSTOMER</Option>
+                <Option value="restaurant">RESTAURANT</Option>
+                <Option value="kitchen">KITCHEN</Option>
+                <Option value="admin">ADMIN</Option>
               </Select>
             </Form.Item>
             <Row justify="center" style={{ marginTop: "10px" }}>

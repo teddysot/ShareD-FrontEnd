@@ -158,8 +158,8 @@ function TableList(props) {
 
 const mapStateToProps = state => {
     return {
-        socket: state.socket.socket,
-        tableList: state.tableList.tableList
+        socket: state.socketReducer.socket,
+        tableList: state.tableReducer.tableList
     }
 }
 

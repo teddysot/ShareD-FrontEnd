@@ -1,3 +1,5 @@
+import axios from "../config/axios";
+
 const setToken = (token) => {
   localStorage.setItem("ACCESS_TOKEN", token);
 };
@@ -11,17 +13,27 @@ const removeToken = () => {
 };
 
 const getRole = () => {
-  if (getToken()) {
-    return "USER";
+  const token = getToken()
+  if (token) {
+    axios.get("/user/getrole")
+      .then(res => {
+        const role = res.data.role.toUpperCase()
+        return role
+      })
+      .catch(err => {
+        console.log("Login Timeout");
+      })
   }
-  return "GUEST";
+  else {
+    return "GUEST";
+  }
 };
 
 const LocalStorageService = {
   setToken,
   getToken,
   removeToken,
-  getRole,
+  getRole
 }
 
 export default LocalStorageService

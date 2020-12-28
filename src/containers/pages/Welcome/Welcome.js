@@ -1,8 +1,28 @@
 import { Button } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux'
 
-function Welcome() {
+function Welcome({ role }) {
+  const history = useHistory()
+
+  const onEnterClick = () => {
+    switch (role) {
+      case "CUSTOMER":
+        history.push('/inputcode')
+        break;
+      case "RESTAURANT":
+        history.push('/table-list')
+        break;
+      case "GUEST":
+        history.push('/login')
+        break;
+
+      default:
+        break;
+    }
+  }
+
   return (
     <div
       style={{
@@ -31,13 +51,18 @@ function Welcome() {
           Welcome
         </div>
         <div data-aos="fade-down">
-          <Link to="/login">
-            <Button>Enter to this site</Button>
-          </Link>
+          <Button onClick={onEnterClick}>Enter to this site</Button>
         </div>
       </div>
     </div>
   );
 }
 
-export default Welcome;
+
+const mapStateToProps = state => {
+  return {
+    role: state.userReducer.role
+  }
+}
+
+export default connect(mapStateToProps)(Welcome);

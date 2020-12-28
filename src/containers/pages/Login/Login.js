@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Col, Form, Input, notification, Row } from "antd";
 import axios from 'axios'
 import LocalStorageService from '../../../services/LocalStorageService'
-import { setupSocket, setRole } from '../../../store/actions';
+import { setupSocket, setUser } from '../../../store/actions';
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -15,10 +15,21 @@ function Login(props) {
         notification.success({
           description: "Login Success"
         })
-        LocalStorageService.setToken(res.data.token)
-        props.onSetRole("USER")
+        const { token, id, username, email, phone_number, fname, lname, profile_url, role, isConfirmed } = res.data
+        LocalStorageService.setToken(token)
+        props.onSetUser({ id, username, email, phone_number, fname, lname, profile_url, role, isConfirmed })
         props.onSetupSocket()
-        history.push('/inputcode')
+        if (isConfirmed) {
+          if (role.toUpperCase() === "CUSTOMER") {
+            history.push('/inputcode')
+          }
+          if (role.toUpperCase() === "RESTAURANT") {
+            history.push('/table-list')
+          }
+        }
+        else {
+          history.push('/otp')
+        }
       })
       .catch(err => {
         notification.error({
@@ -69,13 +80,13 @@ function Login(props) {
 const mapDispatchToProps = dispatch => {
   return {
     onSetupSocket: () => dispatch(setupSocket()),
-    onSetRole: (value) => dispatch(setRole(value))
+    onSetUser: (value) => dispatch(setUser(value))
   };
 };
 
 const mapStateToProps = state => {
   return {
-    role: state.role.role,
+    role: state.userReducer.role,
   }
 }
 

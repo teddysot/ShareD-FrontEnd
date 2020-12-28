@@ -2,6 +2,7 @@ import { SETUP_SOCKET } from "../actions";
 import { notification } from 'antd'
 import io from "socket.io-client";
 import LocalStorageService from "../../services/LocalStorageService";
+import { BASE_BACKEND_URL } from "../../config/constants";
 
 const initialState = {
     socket: null,
@@ -23,7 +24,7 @@ const reducer = (state = initialState, action) => {
 const setupSocket = ({ socket }) => {
     const token = LocalStorageService.getToken();
     if (token && !socket) {
-        const newSocket = io("http://localhost", {
+        const newSocket = io(BASE_BACKEND_URL, {
             query: {
                 token: LocalStorageService.getToken(),
             },

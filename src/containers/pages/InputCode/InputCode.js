@@ -7,6 +7,10 @@ function InputCode({ socket }) {
     const { Search } = Input;
 
     const onSubmit = ({ inputCode }) => {
+        socket.on('joinTable', (res) => {
+            const { users } = res
+            
+        })
         // .emit ส่ง tableCode กลับไปหาไปฝั่ง back
         socket.emit('joinTable', { tableCode: inputCode })
     }
@@ -76,7 +80,7 @@ function InputCode({ socket }) {
 // ประตูโดเรม่อน เพื่อเรียก socket มาใช้
 const mapStateToProps = state => {
     return {
-        socket: state.socket.socket,
+        socket: state.socketReducer.socket,
     }
 }
 

@@ -49,11 +49,11 @@ const components = {
     path: "/create-list-table",
     page: CreateListTable
   },
-  tableList:{
+  tableList: {
     path: "/table-list",
-    page:TableList
+    page: TableList
   },
-  totalTableBill:{
+  totalTableBill: {
     path: "/total-table-bill",
     page: TotalTableBill
   }
@@ -68,7 +68,21 @@ const roles = {
     components.confirmOtp,
 
   ],
-  USER: [
+  RESTAURANT: [
+    components.welcome,
+    components.createListTable,
+    components.tableList,
+    components.totalTableBill,
+    components.inputcode,
+  ],
+  CUSTOMER: [
+    components.welcome,
+    components.chooseMenus,
+    components.orderList,
+    components.inputcode,
+    components.createListTable,
+  ],
+  ADMIN: [
     components.chooseMenus,
     components.orderList,
     components.inputcode,

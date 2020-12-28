@@ -1,14 +1,17 @@
 import './App.css';
 import React, { useEffect } from "react";
-import PrivateRoutes from './containers/PrivateRoutes/PrivateRoutes';
 import { connect } from 'react-redux'
-import { setupSocket } from './store/actions';
+import PrivateRoutes from './containers/PrivateRoutes/PrivateRoutes';
+import { setupSocket, setUser } from './store/actions';
+import LocalStorageService from './services/LocalStorageService'
+import axios from './config/axios'
 
 function App(props) {
-  const { onSetupSocket } = props
+  const { onSetupSocket, onSetUser } = props
 
   useEffect(() => {
     onSetupSocket()
+    getUserInfo(onSetUser)
     return () => {
 
     }
@@ -20,9 +23,28 @@ function App(props) {
     </div>
   );
 }
+
+const getUserInfo = (onSetUser) => {
+  const token = LocalStorageService.getToken()
+  if (token) {
+    axios.get("/user/getinfo")
+      .then(res => {
+        const { user } = res.data
+        onSetUser(user)
+      })
+      .catch(err => {
+        console.log("Error");
+      })
+  }
+  else {
+    console.log("Error2");
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onSetupSocket: () => dispatch(setupSocket()),
+    onSetUser: (value) => dispatch(setUser(value))
   }
 }
 

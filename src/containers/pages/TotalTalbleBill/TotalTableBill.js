@@ -123,7 +123,7 @@ function TotalTableBill(props) {
 
 const mapStateToProps = state => {
     return {
-        selectTableNumber: state.tableList.selectTable
+        selectTableNumber: state.tableReducer.selectTable
     }
 }
 

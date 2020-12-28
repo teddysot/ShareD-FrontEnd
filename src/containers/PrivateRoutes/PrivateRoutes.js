@@ -2,10 +2,9 @@ import React from 'react';
 import RolesList from '../../config/roles';
 import { Switch, Route } from "react-router-dom";
 import NotFound from "../pages/NotFound/NotFound";
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 function PrivateRoutes(props) {
-
   let role = props.role || "GUEST";
 
   return (
@@ -20,7 +19,7 @@ function PrivateRoutes(props) {
 
 const mapStateToProps = state => {
   return {
-      role: state.role.role
+    role: state.userReducer.role
   }
 }
 
