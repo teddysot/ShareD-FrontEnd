@@ -1,4 +1,4 @@
-import { ADD_TABLE, FETCH_TABLE,SELECT_TABLE } from "../actions";
+import { ADD_TABLE, FETCH_TABLE, SELECT_TABLE, UPDATE_ORDERS, UPDATE_USERS } from "../actions";
 
 
 const initialState = {
@@ -22,6 +22,16 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 selectTable: action.value
+            }
+        case UPDATE_ORDERS:
+            return {
+                ...state,
+                tableList: action.value
+            }
+        case UPDATE_USERS:
+            return {
+                ...state,
+                tableList: action.value
             }
         default:
             return state;

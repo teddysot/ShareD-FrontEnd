@@ -5,39 +5,43 @@ import MenuItem from "../MenuItem/MenuItem";
 import ModalOrder from "../ModalOrder/ModalOrder";
 import axios from "../../../config/axios"
 import { connect } from "react-redux";
-import { setMenulist } from "../../../store/actions";
+import { setMenulist, setTableOrders } from "../../../store/actions";
+import { useHistory } from 'react-router-dom'
 
 
-function ChooseMenus({menuList,onSetMenuList}) {
+function ChooseMenus({ menuList, onSetMenuList, onSetTableOrders, socket, userTable }) {
   const [showMenu, setShowMenu] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0); // [ ตัวแปร , ฟังชั่นเอาไว้ set ค่าตัวแปร ]
   const [selectedMenu, setSelectedMenu] = useState(null);
-  const [orderData, setOrderData] = useState([]);
+  //const [orderData, setOrderData] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editItem, setEditItem] = useState(null);
-  
-  const addOrder = (order) => {
-    const newOrderData = [...orderData];
-    newOrderData.push(order);
-    setOrderData(newOrderData);
+
+  const history = useHistory()
+
+  const addOrder = (orders) => {
+    //setOrderData(order);
+    onSetTableOrders({ orders })
   };
 
   const editOrder = (order, idx) => {
-    const newOrderData = [...orderData];
+    const newOrderData = [...userTable.orders];
     newOrderData[idx] = order;
-    setOrderData(newOrderData);
+    //setOrderData(newOrderData);
+    onSetTableOrders(newOrderData)
     setIsEditing(false);
   };
 
   const removeOrder = (idx) => {
-    let newOrderData = [...orderData];
+    let newOrderData = [...userTable.orders];
     newOrderData.splice(idx, 1);
-    setOrderData(newOrderData);
+    //setOrderData(newOrderData);
+    onSetTableOrders(newOrderData)
     setIsEditing(false);
   };
 
   const getTotal = () => {
-    return orderData.reduce((acc, item) => {
+    return userTable.orders.reduce((acc, item) => {
       //reduce ฟังชั่น เอาใว้รวมค่าใน array // acc เป็นตัวแปรเอาไว้รวมค่า
       return acc + item.price * item.quantity; // เอา acc มา + กับ item.price * item.quantity
     }, 0);
@@ -47,17 +51,29 @@ function ChooseMenus({menuList,onSetMenuList}) {
     setShowMenu(!showMenu);
   };
 
+  const confirmOrder = () => {
+    socket.emit('confirmOrder', { tableCode: userTable.tableCode })
+  }
+
   useEffect(() => {
     setTotalPrice(getTotal());
-    return () => {};
-  }, [orderData]); // [data] ทำงานเมื่อ data เปลี่ยน
+    return () => { };
+  }, [userTable.orders]); // [data] ทำงานเมื่อ data เปลี่ยน
 
   useEffect(() => {
     axios.get('/menus')
       .then(res => {
-      onSetMenuList(res.data.allMenu)
+        onSetMenuList(res.data.allMenu)
+      })
+
+    socket.on('newOrder', (res) => {
+      addOrder(res.orders)
     })
-  },[])
+
+    socket.on('confirmOrder', (res) => {
+      history.push('/orderlist')
+    })
+  }, [])
 
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
@@ -68,7 +84,7 @@ function ChooseMenus({menuList,onSetMenuList}) {
           editItem={editItem}
           editOrder={editOrder}
           selectedMenu={
-            isEditing ? orderData[editItem] : menuList[selectedMenu]
+            isEditing ? userTable.orders[editItem] : menuList[selectedMenu]
           }
           showMenu={showMenu}
           toggleModal={toggleModal}
@@ -91,11 +107,13 @@ function ChooseMenus({menuList,onSetMenuList}) {
           setEditItem={setEditItem}
           setIsEditing={setIsEditing}
           title="Your Amount"
-          data={orderData}
+          data={userTable.orders}
           totalPrice={totalPrice}
-          isYour={true}
+          isYour={false}
+          showButton={true}
           toggleModal={toggleModal}
           finishButton="Confirm Order"
+          onFinishClick={confirmOrder}
         />
         {/*จะส่งข้อมูลเข้าไปอีก component ต้องส่งผ่าน props*/}
         <MenuItem
@@ -110,112 +128,17 @@ function ChooseMenus({menuList,onSetMenuList}) {
 
 const mapStateToProps = state => {
   return {
-    menuList: state.menuListReducer.menuList
+    menuList: state.menuListReducer.menuList,
+    userTable: state.userTableReducer.userTable,
+    socket: state.socketReducer.socket
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetMenuList: (value) => dispatch(setMenulist(value))
-
+    onSetMenuList: (value) => dispatch(setMenulist(value)),
+    onSetTableOrders: (value) => dispatch(setTableOrders(value))
   }
 }
 
-export default  connect(mapStateToProps,mapDispatchToProps) (ChooseMenus);
-
-
-
-// const orderData = [
-//   {
-//     name: "salmon",
-//     quantity: 1,
-//     price: 100,
-//   },
-//   {
-//     name: "water",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "Rice",
-//     quantity: 5,
-//     price: 500,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-//   {
-//     name: "sushi ",
-//     quantity: 2,
-//     price: 300,
-//   },
-// ];
-
-// const mockupMenu = [
-//   {
-//     name: "Salmon",
-//     price: 100,
-//     image_url:
-//       "https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg",
-//   },
-//   {
-//     name: "water",
-//     price: 200,
-//     image_url:
-//       "https://cdn.happyfresh.com/spree/images/attachments/7020c17f7e08de302f5877c9d2d7304aaf17448f-large.jpg",
-//   },
-//   {
-//     name: "Salmon",
-//     price: 100,
-//     image_url:
-//       "https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg",
-//   },
-//   {
-//     name: "Salmon",
-//     price: 100,
-//     image_url:
-//       "https://wowsushi.co.nz/wp-content/uploads/2020/04/Nigiri-Salmon-1.jpg",
-//   },
-// ];
+export default connect(mapStateToProps, mapDispatchToProps)(ChooseMenus);

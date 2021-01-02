@@ -2,7 +2,7 @@ import './TableList.css';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Input, Row, Modal, notification } from "antd";
 import { connect } from 'react-redux'
-import { addTable, fetchTable, selectTable } from '../../../store/actions';
+import { addTable, fetchTable, selectTable, setTableCode, setTableOrders, setTableUsers, updateOrders } from '../../../store/actions';
 import { useHistory } from 'react-router-dom';
 
 
@@ -36,8 +36,8 @@ function TableList(props) {
     }
     const tableButtonStyle = { fontSize: '26px', padding: '10px', width: '100px', height: '100px', backgroundColor: '#86DBD4', marginRight: '20px', marginTop: '20px', color: 'gray', borderRadius: '20px' }
     const assignButtonStyle = { backgroundColor: "#ffffff", borderColor: "#86DBD4", color: "#86DBD4", width: "250px", height: "40px", fontSize: "25px", padding: "0", marginTop: "40px", marginRight: "40px" }
-    
-    const { socket, tableList, onAddTable, onFetchTable, onTableNum } = props
+
+    const { socket, tableList, onAddTable, onFetchTable, onUpdateOrders, onSetTableUsers, onSetTableOrders, onSetTableCode } = props
     const [showModal, setShowModal] = useState(false)
     const [tableNumber, setTableNumber] = useState(0)
 
@@ -54,34 +54,7 @@ function TableList(props) {
 
     const createTable = () => {
         console.log('click')
-        // ฟั่งชั่นที่รอการเรียกจากอีกฝั่ง
-        socket.on("createTable", (res) => {
-            const { tableCode, status } = res
-            if (status === 400) {
-                notification.error({
-                    description: "Failed to Create Table"
-                })
-                toggleModal()
-                return
-            }
-            else {
-                const newTable = {
-                    users: [],
-                    number: tableNumber,
-                    code: tableCode,
-                }
 
-                // สร้าง table list ใหม่ขึ้นมา
-                const newTableList = [...tableList]
-
-                // เพิ่ม โต๊ะใหม่เข้าไปใน table list
-                newTableList.push(newTable)
-                // ส่งรายชื่อโต๊ะใหม่ไปให้ Redux
-                onAddTable(newTableList)
-                history.push('/create-list-table')
-            }
-
-        })
         // เรียกฟังชั่น createTable ฝั่ง BackEnd
         socket.emit('createTable', { tableNumber })
     }
@@ -89,19 +62,67 @@ function TableList(props) {
 
     const tableNum = (selectTableNumber) => {
         props.onSelectTable(selectTableNumber)
+        onSetTableCode({ tableCode: tableList[selectTableNumber].code })
+        onSetTableUsers({ tableCode: tableList[selectTableNumber].code, users: tableList[selectTableNumber].users })
+        onSetTableOrders({ orders: tableList[selectTableNumber].orders })
+        socket.emit('viewTable', { tableCode: tableList[selectTableNumber].code })
         history.push('/total-table-bill')
-
-
     }
-
-
-
-
 
     useEffect(() => {
         if (socket) {
             socket.on('fetchTable', (res) => {
                 onFetchTable(res.tableList)
+            })
+
+            // ฟั่งชั่นที่รอการเรียกจากอีกฝั่ง
+            socket.on("createTable", (res) => {
+                const { tableCode, status } = res
+                if (status === 400) {
+                    notification.error({
+                        description: "Failed to Create Table"
+                    })
+                    toggleModal()
+                    return
+                }
+                else {
+                    const newTable = {
+                        users: [],
+                        number: tableNumber,
+                        code: tableCode,
+                        orders: []
+                    }
+
+                    // สร้าง table list ใหม่ขึ้นมา
+                    const newTableList = [...tableList]
+
+                    // เพิ่ม โต๊ะใหม่เข้าไปใน table list
+                    newTableList.push(newTable)
+                    // ส่งรายชื่อโต๊ะใหม่ไปให้ Redux
+                    onAddTable(newTableList)
+
+                    onSetTableCode({ tableCode })
+                    history.push('/create-list-table')
+                }
+
+            })
+
+            socket.on('newOrder', (res) => {
+                const { orders, tableCode } = res
+
+                const newTableList = [...tableList]
+
+                newTableList.map((table, idx) => {
+                    if (table.code === tableCode) {
+                        table.orders = orders
+                    }
+
+                    return table
+                })
+
+                onSetTableUsers({ tableCode })
+
+                onUpdateOrders(newTableList)
             })
         }
         return () => {
@@ -144,8 +165,8 @@ function TableList(props) {
                     <div className="divTableNum">
                         {tableList.map((table, idx) => (
 
-                            <Button key={idx} onClick={() => tableNum(table.number)} style={tableButtonStyle}>
-                                <a style={{ color: '#ffffff' }}> TABLE <br />{table.number} </a>
+                            <Button key={idx} onClick={() => tableNum(idx)} style={tableButtonStyle}>
+                                <p style={{ color: '#ffffff' }}> TABLE <br />{table.number} </p>
                             </Button>
                         ))}
                     </div>
@@ -167,7 +188,11 @@ const mapDispatchToProps = dispatch => {
     return {
         onAddTable: (value) => dispatch(addTable(value)),
         onFetchTable: (value) => dispatch(fetchTable(value)),
-        onSelectTable: (value) => dispatch(selectTable(value))
+        onSelectTable: (value) => dispatch(selectTable(value)),
+        onUpdateOrders: (value) => dispatch(updateOrders(value)),
+        onSetTableUsers: (value) => dispatch(setTableUsers(value)),
+        onSetTableOrders: (value) => dispatch(setTableOrders(value)),
+        onSetTableCode: (value) => dispatch(setTableCode(value))
     };
 };
 

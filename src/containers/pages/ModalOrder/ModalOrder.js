@@ -1,41 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Row, Col, Button, Modal } from "antd";
-
-const mockupPerson = [
-  {
-    username: "pee",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-  {
-    username: "pee2",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-  {
-    username: "pee3",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-  {
-    username: "pee4",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-  {
-    username: "pee5",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-  {
-    username: "pee6",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-  {
-    username: "pee7",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-  {
-    username: "pee8",
-    profile_url: "https://image.flaticon.com/icons/png/512/64/64572.png",
-  },
-];
+import { connect } from "react-redux";
+import {BASE_BACKEND_URL} from '../../../config/constants'
 
 function ModalOrder(props) {
   const {
@@ -43,15 +10,16 @@ function ModalOrder(props) {
     toggleModal,
     showMenu,
     selectedMenu,
-    addOrder,
     isEditing,
     editItem,
     editOrder,
+    socket,
+    userTable
   } = props;
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(
-    new Array(mockupPerson.length).fill(false)
+    new Array(userTable.users.length).fill(false)
   );
 
   useEffect(() => {
@@ -74,7 +42,7 @@ function ModalOrder(props) {
       image_url: selectedMenu.image_url,
     };
 
-    addOrder(order);
+    socket.emit('newOrder', { tableCode: userTable.tableCode, order })
   };
 
   const setQuantity = (value) => {
@@ -89,15 +57,15 @@ function ModalOrder(props) {
   };
 
   const selectAll = () => {
-    let newSelectedPerson = new Array(mockupPerson.length).fill(false);
+    let newSelectedPerson = new Array(userTable.users.length).fill(false);
     if (selectedPerson.indexOf(false) != -1) {
-      newSelectedPerson = new Array(mockupPerson.length).fill(true);
+      newSelectedPerson = new Array(userTable.users.length).fill(true);
     }
     setSelectedPerson(newSelectedPerson);
   };
 
   const resetOptions = () => {
-    const newSelectedPerson = new Array(mockupPerson.length).fill(false);
+    const newSelectedPerson = new Array(userTable.users.length).fill(false);
     setSelectedPerson(newSelectedPerson);
   };
 
@@ -198,7 +166,7 @@ function ModalOrder(props) {
               overflow: "auto",
             }}
           >
-            {mockupPerson.map((person, idx) => (
+            {userTable.users.map((person, idx) => (
               <Col
                 onClick={() => {
                   onSelectPerson(idx);
@@ -216,7 +184,7 @@ function ModalOrder(props) {
                       ? selectedPersonStyle
                       : defaultPersonStyle
                   }
-                  src={person.profile_url}
+                  src={`${BASE_BACKEND_URL}/${person.profile_url}`}
                 ></img>
                 <div>{person.username}</div>
               </Col>
@@ -252,10 +220,10 @@ function ModalOrder(props) {
 
             {isEditing ? (
               <Button
-              onClick={() => {
+                onClick={() => {
                   removeOrder(editItem)
                   toggleModal()
-              }}
+                }}
                 type="primary"
                 shape="round"
                 style={{
@@ -326,4 +294,11 @@ function ModalOrder(props) {
   );
 }
 
-export default ModalOrder;
+const mapStateToProps = state => {
+  return {
+    socket: state.socketReducer.socket,
+    userTable: state.userTableReducer.userTable
+  }
+}
+
+export default connect(mapStateToProps, null)(ModalOrder);

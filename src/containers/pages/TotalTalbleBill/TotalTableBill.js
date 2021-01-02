@@ -1,12 +1,12 @@
 import './TotalTableBill.css';
-import React from 'react'
-import { Button, Col, Input, Row, Modal, notification, Table } from "antd";
+import React, { useEffect } from 'react'
+import { Button, Col, Row } from "antd";
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux'
+import OrderListItem from '../OrderListItem/OrderListItem';
+import { setTableCode, setTableNumber, setTableOrders, setTableUsers } from '../../../store/actions';
 
-
-
-function TotalTableBill(props) {
+function TotalTableBill({ userTable, socket, onSetTableOrders, onSetTableUsers, onSetTableNumber }) {
     const buttonBackStyle = {
         backgroundColor: "#86DBD4",
         borderColor: "#86DBD4",
@@ -35,75 +35,42 @@ function TotalTableBill(props) {
     const history = useHistory()
 
     const back = () => {
+        socket.emit('leaveRoom', { tableCode: userTable.tableCode })
         history.push('/table-list')
     }
 
-    const columns = [
-        {
-            title: 'Menu',
-            dataIndex: 'Menu',
-            // render: text => <a>{text}</a>,
-            align: 'center',
+    const getTotal = () => {
+        return userTable.orders.reduce((acc, item) => {
+            //reduce ฟังชั่น เอาใว้รวมค่าใน array // acc เป็นตัวแปรเอาไว้รวมค่า
+            return acc + item.price * item.quantity; // เอา acc มา + กับ item.price * item.quantity
+        }, 0);
+    };
 
+    const addOrder = (orders, tableCode, users, tableNumber) => {
+        onSetTableOrders({ orders })
+        onSetTableUsers({ tableCode, users })
+        onSetTableNumber({ tableNumber })
+    };
 
-        },
-        {
-            title: 'Customer',
-            dataIndex: 'Customer',
-            align: 'center',
-        },
-        {
-            title: 'Cash Assets',
-            className: 'column-money',
-            dataIndex: 'money',
-            align: 'center',
-        },
+    useEffect(() => {
+        socket.on('newOrder', (res) => {
+            addOrder(res.orders, res.tableCode, res.users, res.tableNumber)
+        })
+        return () => {
 
-    ];
-
-    const data = [
-        {
-            key: '1',
-            Menu: 'rice',
-            money: '300',
-            Customer: 'A B C',
-        },
-        {
-            key: '2',
-            Menu: 'rice and curry',
-            money: '400',
-            Customer: 'A B',
-        },
-        {
-            key: '3',
-            Menu: 'boiled egg',
-            money: '500',
-            Customer: 'B C',
-        },
-    ];
-
-    const total = 10000;
+        }
+    }, [])
 
 
     return (
 
         <>
             <div className="divTableStyle">
-                TABLE<br /> {props.selectTableNumber}
+                TABLE<br /> {userTable.tableNumber}
             </div>
 
             <div className="containerDivStyle">
-                <div style={{ maxWidth: '60%', marginTop: '10px', margin: 'auto' }}>
-                    <Table
-
-                        columns={columns}
-                        dataSource={data}
-                        bordered
-                        // title={() => 'Header'}
-                        footer={() => <h1 style={{ color: "red" }}>Total = {total}</h1>}
-
-                    />
-                </div>
+                <OrderListItem title="Total Amount" data={userTable.orders} totalPrice={getTotal()} isYour={false} showbutton={false} />
             </div>
             <Row justify="center" style={{ marginTop: "20px" }}>
                 <Col>
@@ -123,9 +90,18 @@ function TotalTableBill(props) {
 
 const mapStateToProps = state => {
     return {
-        selectTableNumber: state.tableReducer.selectTable
+        socket: state.socketReducer.socket,
+        userTable: state.userTableReducer.userTable
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetTableOrders: (value) => dispatch(setTableOrders(value)),
+        onSetTableUsers: (value) => dispatch(setTableUsers(value)),
+        onSetTableNumber: (value) => dispatch(setTableNumber(value))
     }
 }
 
 
-export default connect(mapStateToProps, null)(TotalTableBill)
+export default connect(mapStateToProps, mapDispatchToProps)(TotalTableBill)

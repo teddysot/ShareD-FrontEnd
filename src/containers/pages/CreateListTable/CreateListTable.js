@@ -3,8 +3,9 @@ import { Button, Col, Input, Row, Avatar } from 'antd';
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom';
 import { BASE_BACKEND_URL } from "../../../config/constants";
+import { setTableUsers, updateUsers } from '../../../store/actions';
 
-function CreateListTable({ tableList, userTable, role, socket }) {
+function CreateListTable({ tableList, socket, role, userTable, onUpdateUsers, onSetTableUsers }) {
 
     const colImgStyle = { maxHeight: "132px", margin: "50px" }
     const containerColStyle = {
@@ -35,39 +36,29 @@ function CreateListTable({ tableList, userTable, role, socket }) {
     // เรียกใช้ state tableList จาก redux โดยใช้ mapStateToProps 
     // connect  CreateListTable กับ redux 
 
-    const [tableCode, setTableCode] = useState('')
-    const [users, setUsers] = useState([])
-
     const history = useHistory()
 
-    const onCancelClick = () => {
-        history.push('/table-list')
+    const onFinishClick = () => {
+        socket.emit('readyToOrder', { tableCode: userTable.tableCode })
     }
 
     useEffect(() => {
-        socket.on('joinTable', (res) => {
-            const resUsers = res.users
-
-            const newUsers = []
-            resUsers.map((user) => {
-                const newUser = {
-                    profile_url: user.profile_url,
-                    username: user.username
-                }
-
-                newUsers.push(newUser)
+        if (role === "RESTAURANT") {
+            socket.on('joinTable', (res) => {
+                onSetTableUsers({ users: res.users, tableCode: res.tableCode })
+                onUpdateUsers(res.tableList)
             })
-
-            setUsers(newUsers)
-        })
-    }, [])
-
-    useEffect(() => {
-        if (tableList.length > 0) {
-            setTableCode(tableList[tableList.length - 1].code)
-
-            const targetUsers = tableList.filter((table) => table.code === tableCode)
-            setUsers(users => targetUsers)
+            socket.on('readyToOrder', (res) => {
+                history.push('/table-list')
+            })
+        }
+        else {
+            socket.on('joinTable', (res) => {
+                onSetTableUsers({ users: res.users, tableCode: res.tableCode })
+            })
+            socket.on('readyToOrder', (res) => {
+                history.push('/choose-menus')
+            })
         }
         return () => {
 
@@ -92,7 +83,7 @@ function CreateListTable({ tableList, userTable, role, socket }) {
                     </Row>
                     <Row justify="center">
                         <Col>
-                            <h3>{tableCode}</h3>
+                            <h3>{userTable.tableCode}</h3>
                         </Col>
                     </Row>
 
@@ -107,7 +98,7 @@ function CreateListTable({ tableList, userTable, role, socket }) {
                 <Col>
 
                     <div style={{ display: 'flex' }}>
-                        {users.length > 0 ? (users.map((user, idx) => (
+                        {userTable.users ? (userTable.users.map((user, idx) => (
                             <div key={idx} style={{ marginRight: 20 }}>
                                 <div>
                                     <Avatar size={100} src={`${BASE_BACKEND_URL}/${user.profile_url}`} style={AvatarStyle} />
@@ -124,9 +115,12 @@ function CreateListTable({ tableList, userTable, role, socket }) {
             </Row>
             <Row justify="center" style={{ marginTop: 50 }}>
                 <Col>
-                    <Button type="primary" shape="round" onClick={onCancelClick}
-                        style={buttonFinishStyle}
-                    >Finish</Button>
+                    {role === "RESTAURANT" ?
+                        <Button type="primary" shape="round" onClick={onFinishClick}
+                            style={buttonFinishStyle}
+                        >Finish</Button>
+                        : null
+                    }
                 </Col>
 
             </Row>
@@ -138,10 +132,17 @@ const mapStateToProps = state => {
     return {
         socket: state.socketReducer.socket,
         tableList: state.tableReducer.tableList,
-        userTable: state.userTableReducer.userTable,
-        role: state.userReducer.role
+        role: state.userReducer.role,
+        userTable: state.userTableReducer.userTable
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onUpdateUsers: (value) => dispatch(updateUsers(value)),
+        onSetTableUsers: (value) => dispatch(setTableUsers(value))
     }
 }
 
 
-export default connect(mapStateToProps, null)(CreateListTable)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateListTable)

@@ -1,15 +1,17 @@
 import React from 'react'
-import { Button, Col, Form, Input, notification, Row, } from "antd";
+import { Button, Col, Form, Input, Row, } from "antd";
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { setTableUsers } from '../../../store/actions';
 
-function InputCode({ socket }) {
-    const { Search } = Input;
+function InputCode({ socket, onSetTableUsers }) {
+    const history = useHistory()
 
     const onSubmit = ({ inputCode }) => {
         socket.on('joinTable', (res) => {
-            const { users } = res
-            
+            onSetTableUsers({ tableCode: inputCode, users: res.users })
+            history.push('/create-list-table')
         })
         // .emit ส่ง tableCode กลับไปหาไปฝั่ง back
         socket.emit('joinTable', { tableCode: inputCode })
@@ -84,4 +86,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(InputCode);
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetTableUsers: (value) => dispatch(setTableUsers(value)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InputCode);

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Row, Col, List, Avatar, Button, Modal } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { BASE_BACKEND_URL } from '../../../config/constants'
+import { connect } from "react-redux";
 
 function OrderListItem(props) {
-  const { toggleModal, finishButton, setIsEditing, setEditItem } = props;
+  const { toggleModal, finishButton, setIsEditing, setEditItem, userTable, onFinishClick } = props;
 
   return (
     <Col
@@ -55,7 +56,7 @@ function OrderListItem(props) {
                   >
                     {item.users.map((user, idx) =>
                       user ? (
-                        <Avatar src="https://image.flaticon.com/icons/png/512/64/64572.png" />
+                        <Avatar src={`${BASE_BACKEND_URL}/${userTable.users[idx].profile_url}`} />
                       ) : null
                     )}
                   </Col>
@@ -108,10 +109,11 @@ function OrderListItem(props) {
         }}
       >
         <Col span={10}>
-          {props.isYour ? (
+          {props.showButton ? (
             <Button
               type="primary"
               shape="round"
+              onClick={onFinishClick}
               style={{
                 backgroundColor: "#86DBD4",
                 borderColor: "#86DBD4",
@@ -145,4 +147,10 @@ function OrderListItem(props) {
   );
 }
 
-export default OrderListItem;
+const mapStateToProps = state => {
+  return {
+    userTable: state.userTableReducer.userTable
+  }
+}
+
+export default connect(mapStateToProps, null)(OrderListItem);
